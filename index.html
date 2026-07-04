@@ -99,6 +99,16 @@
         .ck.done::before { content: '☑ '; color: var(--green); }
         .ck.done { color: #999; text-decoration: line-through; }
 
+        /* ── Links & Buttons ── */
+        .lnk {
+            display: block; padding: 11px 14px; margin: 8px 0; border-radius: 10px;
+            font-size: 14px; font-weight: 600; text-decoration: none; text-align: center;
+            background: linear-gradient(135deg, #1a1a2e, #16213e); color: white;
+        }
+        .lnk.outline { background: white; color: #1a1a2e; border: 2px solid #1a1a2e; }
+        .lnk.tel { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; border: none; }
+        .lnk-icon { margin-right: 6px; }
+
         /* ── Section header ── */
         .sec { font-size: 14px; font-weight: 700; color: #666; margin: 16px 0 8px; padding-left: 4px; }
     </style>
@@ -293,6 +303,99 @@
     </div>
 </div>
 
+<!-- ═══════════════ PAGE 6: 申购 ═══════════════ -->
+<div class="page" id="page-apply">
+    <div class="card">
+        <div class="card-title">🚀 各楼盘怎么申购</div>
+        <div style="font-size:13px;color:#666;margin-bottom:8px;">以下两个楼盘均处于<b>常态化配售</b>，👈不用摇号·直接去售楼处选房·先到先得</div>
+    </div>
+
+    <!-- 深铁璟城 -->
+    <div class="card">
+        <div class="card-title">🏆 深铁璟城 · 申购指南</div>
+        <div class="row"><span class="l">📍 售楼处地址</span><span class="r">宝安松岗·松福大道与朗碧路交汇处</span></div>
+        <div class="row"><span class="l">🚇 怎么去</span><span class="r"><b>11号线碧头站</b>上盖，出站即到</span></div>
+        <div class="row"><span class="l">📞 咨询电话</span><span class="r"><b>0755-83899888</b></span></div>
+        <div class="row"><span class="l">🕐 工作时间</span><span class="r">每天 9:00-18:00</span></div>
+        <div class="row"><span class="l">📦 可选房源</span><span class="r" style="color:var(--green);"><b>~1,200套</b> 两房+三房</span></div>
+        <div class="row"><span class="l">💰 订金</span><span class="r">选房后现场交 2万元</span></div>
+        <a class="lnk tel" href="tel:0755-83899888"><span class="lnk-icon">📞</span> 电话咨询深铁璟城</a>
+        <a class="lnk outline" href="https://zjj.sz.gov.cn/ztfw/zfbz/?from=index" target="_blank"><span class="lnk-icon">🔗</span> 官网查剩余房源（白色=可选）</a>
+        <a class="lnk" href="https://webapp.mypaas.com.cn/wh-zyx/stzy/prod/0.2.6/" target="_blank"><span class="lnk-icon">📅</span> 预约深铁璟城现场看房</a>
+        <div style="font-size:12px;color:var(--sub);margin-top:8px;">
+            💡 看房可网上VR看，也可预约去现场。房源充足慢慢挑。
+        </div>
+    </div>
+
+    <!-- 福汇阁 -->
+    <div class="card">
+        <div class="card-title">🥈 安居福汇阁 · 申购指南</div>
+        <div class="row"><span class="l">📍 售楼处地址</span><span class="r">宝安福海·富桥大道与福山路交汇处</span></div>
+        <div class="row"><span class="l">🚶 怎么去</span><span class="r"><b>11号线桥头站</b>出站步行约900米</span></div>
+        <div class="row"><span class="l">🏠 性质</span><span class="r">人才房 · 完全产权 · 满10年可上市</span></div>
+        <div class="row"><span class="l">📦 可选房源</span><span class="r" style="color:var(--orange);"><b>~30套</b> 现房·卖一套少一套</span></div>
+        <div class="row"><span class="l">📅 竣工</span><span class="r">2024年7月·即买即住</span></div>
+        <a class="lnk outline" href="https://zjj.sz.gov.cn/ztfw/zfbz/?from=index" target="_blank"><span class="lnk-icon">🔗</span> 官网查福汇阁剩余房源</a>
+        <div style="font-size:12px;color:var(--orange);margin-top:6px;">
+            ⚠️ 只剩<b>约30套</b>，看中了果断下手！流程和深铁璟城一样。
+        </div>
+    </div>
+
+    <!-- 通用流程 -->
+    <div class="card">
+        <div class="card-title">📋 通用申购流程</div>
+        <div style="font-size:13px;color:#666;margin-bottom:10px;">所有人申购人才房的唯一官方入口：</div>
+        <a class="lnk" href="https://zjj.sz.gov.cn/ztfw/zfbz/?from=index" target="_blank"><span class="lnk-icon">🏛️</span> 深圳市住房和建设局 · 住房保障服务</a>
+        <div style="margin-top:12px;">
+            <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-t">官网预约</div><div class="step-d">上面链接→住房保障服务→面向人才配售住房申请→选项目→预约登记</div></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-t">去售楼处选房</div><div class="step-d">带<a href="#" style="color:var(--blue);">材料清单↓</a>→挑房号→交2万订金→签认购书</div></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-t">线上提交审核</div><div class="step-d">签完认购书2天内，回住建局网站提交资格申请</div></div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-t">签合同·交首付·贷款</div><div class="step-d">审核通过→签买卖合同→交首付→办公积金贷款→等收房</div></div></div>
+        </div>
+    </div>
+
+    <!-- 所需材料 -->
+    <div class="card">
+        <div class="card-title">📁 去售楼处要带的材料</div>
+        <div style="font-size:13px;">
+            <div style="padding:6px 0;">✅ 身份证（你和女朋友的）</div>
+            <div style="padding:6px 0;">✅ 户口本（原件）</div>
+            <div style="padding:6px 0;">✅ 本科毕业证/学位证</div>
+            <div style="padding:6px 0;">✅ 社保缴费清单（i深圳/i人社APP打印）</div>
+            <div style="padding:6px 0;">✅ 无房证明（i深圳APP打印）</div>
+            <div style="padding:6px 0;">✅ 结婚证（如已领证）</div>
+            <div style="padding:6px 0;">💳 2万元订金（刷卡/手机转账）</div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="card">
+        <div class="card-title">❓ 常见问题</div>
+        <div style="font-size:13px;">
+            <div style="padding:8px 0;border-bottom:1px solid #f0f0f5;">
+                <b>Q: 没结婚可以去选房吗？</b><br>
+                <span style="color:#666;">A: 可以，以个人名义申请。但建议选好房后尽快领证，家庭公积金贷款上限176万 vs 个人96万。</span>
+            </div>
+            <div style="padding:8px 0;border-bottom:1px solid #f0f0f5;">
+                <b>Q: 女朋友不是深户能申请吗？</b><br>
+                <span style="color:#666;">A: 人才房申请方深户即可，配偶不限。你们都是深户，两条路都能走。</span>
+            </div>
+            <div style="padding:8px 0;border-bottom:1px solid #f0f0f5;">
+                <b>Q: 选房后可以反悔吗？</b><br>
+                <span style="color:#666;">A: 签认购书前可以。签了认购书但放弃，2万订金不退。签合同后反悔按违约责任处理。</span>
+            </div>
+            <div style="padding:8px 0;border-bottom:1px solid #f0f0f5;">
+                <b>Q: 怎么看还有哪些房源？</b><br>
+                <span style="color:#666;">A: 上住建局官网→住房保障服务→面向人才配售住房申请→房源公示。白色格子=可以选，橙色=已被选。</span>
+            </div>
+            <div style="padding:8px 0;">
+                <b>Q: 贷款什么时候办？</b><br>
+                <span style="color:#666;">A: 签完买卖合同后。公积金贷款在签合同后申请，审批约2-4周。建议提前咨询公积金中心（12329）。</span>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ═══════════════ PAGE 5: 档案 ═══════════════ -->
 <div class="page" id="page-profile">
     <div class="card">
@@ -347,6 +450,9 @@
     </div>
     <div class="nav-item" data-page="policy" data-title="📋 购房分析 · 政策">
         <div class="icon">📋</div><div>政策</div>
+    </div>
+    <div class="nav-item" data-page="apply" data-title="🚀 购房分析 · 申购">
+        <div class="icon">🚀</div><div>申购</div>
     </div>
     <div class="nav-item" data-page="profile" data-title="👤 购房分析 · 档案">
         <div class="icon">👤</div><div>档案</div>
