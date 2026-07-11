@@ -1,536 +1,861 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>购房分析 · 人才房</title>
-    <style>
-        :root { --bg: #f5f7fa; --card: #fff; --text: #1a1a2e; --sub: #888; --nav-h: 64px; --header-h: 48px; --green: #2e7d32; --blue: #1565c0; --orange: #e65100; --red: #c62828; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); -webkit-tap-highlight-color: transparent; padding-top: var(--header-h); padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom)); }
-        .page { display: none; padding: 16px; max-width: 720px; margin: 0 auto; }
-        .page.active { display: block; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>购房全流程管理系统</title>
+<style>
+:root {
+  --bg: #f0f2f5;
+  --card: #fff;
+  --text: #1a1a2e;
+  --sub: #6b7280;
+  --muted: #9ca3af;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --orange: #ea580c;
+  --orange-light: #fff7ed;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --purple: #7c3aed;
+  --border: #e5e7eb;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+}
 
-        /* ── Header ── */
-        .topbar {
-            position: fixed; top: 0; left: 0; right: 0; height: var(--header-h);
-            background: linear-gradient(135deg, #1a1a2e, #16213e 60%, #0f3460);
-            color: white; display: flex; align-items: center; justify-content: center;
-            font-size: 16px; font-weight: 700; z-index: 100; letter-spacing: 1px;
-        }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--text); line-height:1.6;
+  -webkit-font-smoothing: antialiased;
+}
 
-        /* ── Bottom Nav ── */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0; height: var(--nav-h);
-            background: white; display: flex; border-top: 1px solid #e8e8ee;
-            z-index: 100; padding-bottom: env(safe-area-inset-bottom);
-        }
-        .nav-item {
-            flex: 1; display: flex; flex-direction: column; align-items: center;
-            justify-content: center; font-size: 11px; color: #999; cursor: pointer;
-            transition: color 0.2s; padding: 4px 0;
-        }
-        .nav-item .icon { font-size: 20px; margin-bottom: 2px; }
-        .nav-item.active { color: var(--text); font-weight: 600; }
+/* ── Top Nav ── */
+.topnav {
+  background: #fff; border-bottom:1px solid var(--border);
+  padding: 0 24px; height: 60px; display:flex; align-items:center;
+  justify-content: space-between; position: sticky; top:0; z-index:100;
+}
+.topnav .logo { font-size:17px; font-weight:800; display:flex; align-items:center; gap:8px; }
+.topnav .nav-links { display:flex; gap:2px; }
+.topnav .nav-links a {
+  padding:8px 14px; border-radius:8px; text-decoration:none;
+  color:var(--sub); font-size:13.5px; font-weight:500; transition:all 0.15s;
+  white-space:nowrap;
+}
+.topnav .nav-links a:hover, .topnav .nav-links a.active {
+  background:#f0f2f5; color:var(--text);
+}
+.topnav .profile-btn {
+  display:flex; align-items:center; gap:6px; padding:8px 18px;
+  border-radius:20px; background:linear-gradient(135deg,#1a1a2e,#16213e);
+  color:#fff; font-size:13px; font-weight:600; border:none;
+  cursor:pointer; text-decoration:none; transition:all 0.15s;
+}
+.topnav .profile-btn:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(26,26,46,0.3); }
 
-        /* ── Cards ── */
-        .card {
-            background: var(--card); border-radius: 14px; padding: 16px;
-            margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .card-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #f0f0f5; }
+/* ── Page Container ── */
+.page { display:none; }
+.page.active { display:block; }
+.container { max-width:1200px; margin:0 auto; padding:24px; }
 
-        /* ── Stats Grid ── */
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .stat {
-            background: #f8f9fb; border-radius: 10px; padding: 12px; text-align: center;
-        }
-        .stat .val { font-size: 22px; font-weight: 800; }
-        .stat .lbl { font-size: 12px; color: var(--sub); margin-top: 2px; }
-        .stat.hl { background: linear-gradient(135deg, #e8f5e9, #f1f8e9); }
-        .stat.hl .val { color: var(--green); }
+/* ── Hero ── */
+.hero {
+  background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
+  border-radius:16px; padding:36px 32px; color:#fff; margin-bottom:24px;
+  position:relative; overflow:hidden;
+}
+.hero::after {
+  content:''; position:absolute; top:-40%; right:-5%;
+  width:350px; height:350px; background:radial-gradient(circle,rgba(255,255,255,0.06) 0%,transparent 70%);
+  border-radius:50%;
+}
+.hero h1 { font-size:26px; font-weight:800; margin-bottom:6px; position:relative; z-index:1; }
+.hero p { color:rgba(255,255,255,0.55); font-size:14px; margin-bottom:18px; position:relative; z-index:1; }
+.hero-row { display:flex; gap:14px; flex-wrap:wrap; position:relative; z-index:1; }
+.hero-stat {
+  background:rgba(255,255,255,0.07); backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.1); border-radius:10px;
+  padding:13px 18px; min-width:130px;
+}
+.hero-stat .val { font-size:20px; font-weight:800; }
+.hero-stat .lbl { font-size:11px; color:rgba(255,255,255,0.45); margin-top:2px; }
 
-        /* ── Info Row ── */
-        .row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
-        .row:last-child { border-bottom: none; }
-        .row .l { color: #666; flex-shrink: 0; }
-        .row .r { text-align: right; font-weight: 600; }
+/* ── Section ── */
+.sec-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; margin-top:4px; }
+.sec-hdr h2 { font-size:17px; font-weight:700; display:flex; align-items:center; gap:8px; }
+.badge { font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; background:#e5e7eb; color:#666; }
 
-        /* ── Highlight Box ── */
-        .box {
-            border-radius: 12px; padding: 14px; margin: 10px 0;
-            border-left: 4px solid;
-        }
-        .box.g { background: linear-gradient(135deg, #e8f5e9, #f1f8e9); border-color: #4caf50; }
-        .box.b { background: linear-gradient(135deg, #e3f2fd, #e8eaf6); border-color: #2196f3; }
-        .box.o { background: linear-gradient(135deg, #fff3e0, #fce4ec); border-color: #ff9800; }
-        .box .big { font-size: 22px; font-weight: 800; }
+/* ── Grid ── */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.g23 { display:grid; grid-template-columns:2fr 1fr; gap:14px; }
 
-        /* ── Badge ── */
-        .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-        .tag:nth-child(1) { background: #e8f5e9; color: var(--green); margin-right: 4px; }
-        .tag:nth-child(2) { background: #fff3e0; color: var(--orange); margin-right: 4px; }
-        .tag:nth-child(3) { background: #e3f2fd; color: var(--blue); }
+/* ── Card ── */
+.card { background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid var(--border); overflow:hidden; }
+.card-hdr { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.card-hdr h3 { font-size:14px; font-weight:700; display:flex; align-items:center; gap:8px; }
+.card-body { padding:18px; }
 
-        /* ── Project Card ── */
-        .proj {
-            border: 1px solid #e8e8ee; border-radius: 12px; padding: 14px; margin-bottom: 10px;
-        }
-        .proj.rec { border-color: #4caf50; background: #fafff5; }
-        .proj .name { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-        .proj .tag { margin-bottom: 6px; display: inline-block; }
+/* ── Property Card ── */
+.prop-card {
+  border:2px solid var(--border); border-radius:var(--radius); padding:18px;
+  background:#fafbfc; transition:border-color 0.2s,box-shadow 0.2s;
+}
+.prop-card:hover { border-color:var(--blue); box-shadow:var(--shadow-md); }
+.prop-card.rec { border-color:var(--green); background:var(--green-light); }
+.prop-card.rec:hover { border-color:var(--green); }
+.prop-card .prop-name { font-size:16px; font-weight:700; margin-bottom:3px; }
+.prop-card .prop-meta { font-size:12px; color:var(--sub); margin-bottom:10px; }
+.prop-card .prop-tags { display:flex; gap:5px; margin-bottom:10px; flex-wrap:wrap; }
+.prop-card .prop-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.prop-card .prop-stat { background:#fff; border-radius:8px; padding:9px; border:1px solid var(--border); text-align:center; }
+.prop-card .prop-stat .val { font-size:17px; font-weight:800; }
+.prop-card .prop-stat .lbl { font-size:10px; color:var(--sub); }
+.prop-card .prop-act { margin-top:10px; display:flex; gap:8px; }
 
-        /* ── Table ── */
-        .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
-        th, td { padding: 8px 6px; text-align: center; border-bottom: 1px solid #eee; }
-        th { background: #f8f9fb; font-weight: 700; color: #666; font-size: 11px; position: sticky; top: 0; }
-        tr.grey td { color: #999; }
+/* ── Phase Cards ── */
+.phase-card {
+  border-radius:var(--radius); padding:16px 18px; margin-bottom:10px;
+  background:#f8fafc; border:1px solid var(--border);
+}
+.phase-card .phase-lbl {
+  display:inline-block; padding:2px 10px; border-radius:10px;
+  font-size:11px; font-weight:700; margin-bottom:8px;
+}
+.phase-card .phase-items { display:flex; gap:6px; flex-wrap:wrap; }
+.phase-chip {
+  display:inline-flex; align-items:center; gap:5px; padding:5px 10px;
+  background:#fff; border:1px solid var(--border); border-radius:6px;
+  font-size:11.5px; cursor:pointer; transition:all 0.15s;
+}
+.phase-chip:hover { border-color:var(--blue); background:var(--blue-light); }
+.chip-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.dot-blue { background:var(--blue); }
+.dot-orange { background:var(--orange); }
+.dot-green { background:var(--green); }
+.dot-purple { background:var(--purple); }
+.dot-red { background:var(--red); }
 
-        /* ── Step ── */
-        .step { display: flex; gap: 10px; margin-bottom: 14px; align-items: flex-start; }
-        .step-num { width: 26px; height: 26px; border-radius: 50%; background: #1a1a2e; color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
-        .step-t { font-weight: 700; font-size: 13px; }
-        .step-d { font-size: 12px; color: #666; }
+/* ── Timeline ── */
+.timeline { position:relative; padding-left:26px; }
+.timeline::before {
+  content:''; position:absolute; left:10px; top:8px; bottom:8px;
+  width:2px; background:var(--border);
+}
+.tl-item { position:relative; padding:10px 0; }
+.tl-item::before {
+  content:''; position:absolute; left:-20px; top:14px; width:8px; height:8px;
+  border-radius:50%; background:var(--border); border:2px solid #fff;
+}
+.tl-item.active::before { background:var(--blue); }
+.tl-item.done::before { background:var(--green); }
+.tl-item .tl-t { font-weight:700; font-size:13px; }
+.tl-item .tl-d { font-size:11px; color:var(--sub); margin-top:1px; }
+.tl-phase { font-weight:700; font-size:11px; margin-bottom:2px; letter-spacing:1px; }
 
-        /* ── Checklist ── */
-        .ck { padding: 9px 0; border-bottom: 1px solid #f0f0f5; font-size: 13px; }
-        .ck::before { content: '☐ '; color: #ccc; font-size: 14px; }
-        .ck.done::before { content: '☑ '; color: var(--green); }
-        .ck.done { color: #999; text-decoration: line-through; }
+/* ── Buttons ── */
+.btn {
+  display:inline-flex; align-items:center; gap:5px; padding:7px 14px;
+  border-radius:8px; font-size:12.5px; font-weight:600; border:none;
+  cursor:pointer; text-decoration:none; transition:all 0.15s;
+}
+.btn-pri { background:var(--blue); color:#fff; }
+.btn-pri:hover { background:#1d4ed8; }
+.btn-out { background:#fff; color:var(--blue); border:1.5px solid var(--blue); }
+.btn-out:hover { background:var(--blue-light); }
+.btn-gh { background:transparent; color:var(--sub); }
+.btn-gh:hover { background:#f3f4f6; color:var(--text); }
+.btn-xs { padding:3px 8px; font-size:11px; }
 
-        /* ── Links & Buttons ── */
-        .lnk {
-            display: block; padding: 11px 14px; margin: 8px 0; border-radius: 10px;
-            font-size: 14px; font-weight: 600; text-decoration: none; text-align: center;
-            background: linear-gradient(135deg, #1a1a2e, #16213e); color: white;
-        }
-        .lnk.outline { background: white; color: #1a1a2e; border: 2px solid #1a1a2e; }
-        .lnk.tel { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; border: none; }
-        .lnk-icon { margin-right: 6px; }
+/* ── Tag ── */
+.tag {
+  display:inline-block; padding:2px 8px; border-radius:10px;
+  font-size:10.5px; font-weight:700;
+}
+.tag-g { background:var(--green-light); color:var(--green); }
+.tag-b { background:var(--blue-light); color:var(--blue); }
+.tag-o { background:var(--orange-light); color:var(--orange); }
+.tag-r { background:var(--red-light); color:var(--red); }
 
-        /* ── Section header ── */
-        .sec { font-size: 14px; font-weight: 700; color: #666; margin: 16px 0 8px; padding-left: 4px; }
-    </style>
+/* ── Progress ── */
+.progress { height:6px; background:#e5e7eb; border-radius:3px; margin:8px 0; overflow:hidden; }
+.progress-bar { height:100%; border-radius:3px; transition:width 0.3s; }
+
+/* ── Table ── */
+.tbl-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+table th {
+  text-align:left; padding:9px 10px; font-weight:700; color:var(--sub);
+  font-size:10.5px; text-transform:uppercase; letter-spacing:0.5px;
+  border-bottom:2px solid var(--border); white-space:nowrap;
+}
+table td { padding:10px; border-bottom:1px solid #f3f4f6; white-space:nowrap; }
+table tr:hover td { background:#fafbfc; }
+table .hl { font-weight:700; }
+table .num { text-align:right; }
+
+/* ── Stat Row ── */
+.sr { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f3f4f6; font-size:13px; }
+.sr:last-child { border-bottom:none; }
+.sr .sr-l { color:var(--sub); }
+.sr .sr-r { font-weight:700; }
+
+/* ── Compare Page specific ── */
+.cmp-bar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 16px; background:#fff; border-radius:var(--radius);
+  border:1px solid var(--border); margin-bottom:14px;
+}
+.cmp-bar .cmp-title { font-size:14px; font-weight:700; }
+.cmp-bar .cmp-filters { display:flex; gap:6px; flex-wrap:wrap; }
+.filter-chip {
+  padding:4px 12px; border-radius:16px; font-size:12px; font-weight:500;
+  border:1px solid var(--border); background:#fff; cursor:pointer; transition:all 0.15s;
+}
+.filter-chip.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+.filter-chip:hover:not(.active) { border-color:var(--blue); color:var(--blue); }
+
+.cmp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; }
+.cmp-detail-card {
+  background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
+  border:2px solid var(--border); padding:20px; transition:all 0.2s;
+}
+.cmp-detail-card:hover { border-color:var(--blue); box-shadow:var(--shadow-md); }
+.cmp-detail-card.rec { border-color:var(--green); background:#fafff6; }
+.cmp-detail-card .cmp-rank {
+  font-size:32px; font-weight:900; color:#e5e7eb; position:absolute;
+  right:16px; top:12px;
+}
+.cmp-detail-card .cmp-name { font-size:18px; font-weight:800; margin-bottom:4px; }
+.cmp-detail-card .cmp-addr { font-size:12px; color:var(--sub); margin-bottom:10px; }
+.cmp-detail-card .cmp-tags { margin-bottom:10px; display:flex; gap:4px; flex-wrap:wrap; }
+.cmp-detail-card .cmp-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+.cmp-stat {
+  background:#f8fafc; border-radius:8px; padding:10px; text-align:center;
+}
+.cmp-stat .cmp-val { font-size:18px; font-weight:800; }
+.cmp-stat .cmp-lbl { font-size:10px; color:var(--sub); }
+.cmp-detail-card .cmp-commute { margin-bottom:12px; }
+.cmp-detail-card .cmp-commute .cr {
+  display:flex; align-items:center; gap:6px; padding:5px 8px;
+  border-radius:6px; background:#f8fafc; margin-bottom:4px; font-size:12px;
+}
+.cmp-detail-card .cmp-commute .cr .cr-time { font-weight:700; margin-left:auto; }
+
+.radar-wrap { background:#fff; border-radius:var(--radius); padding:20px; border:1px solid var(--border); height:100%; }
+.radar-title { font-size:14px; font-weight:700; margin-bottom:12px; }
+.radar-row { display:flex; align-items:center; margin-bottom:8px; font-size:12px; }
+.radar-row .rr-l { width:70px; text-align:right; padding-right:10px; color:var(--sub); flex-shrink:0; }
+.radar-row .rr-bar { flex:1; height:8px; background:#f0f2f5; border-radius:4px; overflow:hidden; }
+.radar-row .rr-fill { height:100%; border-radius:4px; }
+.radar-row .rr-val { width:36px; text-align:right; font-weight:700; font-size:11px; padding-left:8px; flex-shrink:0; }
+
+/* ── Loan Calculator ── */
+.calc-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.calc-input { margin-bottom:12px; }
+.calc-input label { display:block; font-size:12px; font-weight:600; color:var(--sub); margin-bottom:4px; }
+.calc-input input, .calc-input select {
+  width:100%; padding:8px 12px; border:1.5px solid var(--border); border-radius:8px;
+  font-size:14px; font-family:inherit; transition:border-color 0.15s;
+}
+.calc-input input:focus { outline:none; border-color:var(--blue); }
+.calc-result {
+  background:linear-gradient(135deg,#f8fafc,#f0fdf4); border-radius:var(--radius);
+  padding:20px; border:1px solid var(--border);
+}
+.calc-result .big-num { font-size:36px; font-weight:900; }
+
+/* ── Footer ── */
+.footer {
+  text-align:center; padding:28px; color:var(--muted); font-size:11px;
+  border-top:1px solid var(--border); margin-top:28px;
+}
+
+/* ── Responsive ── */
+@media (max-width:900px) {
+  .g2,.g23 { grid-template-columns:1fr; }
+  .g3 { grid-template-columns:1fr 1fr; }
+  .g4 { grid-template-columns:1fr 1fr; }
+  .hero { padding:24px 20px; }
+  .hero h1 { font-size:21px; }
+  .topnav .nav-links { display:none; }
+  .calc-grid { grid-template-columns:1fr; }
+  .cmp-grid { grid-template-columns:1fr; }
+}
+@media (max-width:560px) {
+  .g3,.g4 { grid-template-columns:1fr; }
+  .hero-row { flex-direction:column; }
+}
+</style>
 </head>
 <body>
 
-<!-- ─── Top Bar ─── -->
-<div class="topbar" id="topTitle">🏠 购房分析 · 首页</div>
+<!-- ═══════════════ TOP NAV ═══════════════ -->
+<nav class="topnav" id="topnav">
+  <div class="logo">🏠 购房全流程管理</div>
+  <div class="nav-links">
+    <a href="#" data-page="home" class="active">首页</a>
+    <a href="#" data-page="compare">楼盘对比</a>
+    <a href="#" data-page="loan">贷款测算</a>
+    <a href="#" data-page="reno">装修管理</a>
+    <a href="#" data-page="furniture">家具清单</a>
+  </div>
+  <a href="#" class="profile-btn" data-page="profile">👤 个人档案</a>
+</nav>
 
-<!-- ═══════════════ PAGE 1: 首页 ═══════════════ -->
-<div class="page active" id="page-home">
-    <div class="card">
-        <div class="card-title">👤 你的基本情况</div>
-        <div class="stats">
-            <div class="stat"><div class="val">2.15万</div><div class="lbl">月到手收入</div></div>
-            <div class="stat hl"><div class="val">3,300</div><div class="lbl">月公积金缴存</div></div>
-            <div class="stat"><div class="val">9.4万</div><div class="lbl">公积金余额</div></div>
-            <div class="stat"><div class="val">4,000</div><div class="lbl">当前月租金</div></div>
-        </div>
-        <div style="margin-top:10px; font-size:13px; color:#666;">
-            🚇 你：<b>桥头站</b>（11号线）&nbsp;·&nbsp; 女友：<b>固戍站</b>（1号线，明年）
-        </div>
-    </div>
+<!-- ═══════════════ PAGE: 首页 ═══════════════ -->
+<main class="page active" id="pg-home">
+<div class="container">
 
-    <div class="card">
-        <div class="card-title">🏆 首推方案</div>
-        <div class="proj rec">
-            <div class="name">🏗️ 深铁璟城 <span class="tag">🏗️新房</span><span class="tag">📅2026.12交房</span></div>
-            <div class="row"><span class="l">📍 位置</span><span class="r">宝安松岗·11号线碧头站上盖</span></div>
-            <div class="row"><span class="l">💰 均价</span><span class="r"><b>24,000元/㎡</b></span></div>
-            <div class="row"><span class="l">🏢 两房总价</span><span class="r" style="color:var(--green);font-size:16px;"><b>约165万</b></span></div>
-            <div class="row"><span class="l">🔢 首付15%</span><span class="r" style="color:var(--green);"><b>约24万</b></span></div>
-            <div class="row"><span class="l">📦 房源</span><span class="r"><b>~1,200套</b> 随时选</span></div>
-        </div>
-        <div class="box g">
-            <div class="row"><span class="l">月供实付</span><span class="r"><span class="big">2,326</span> 元/月</span></div>
-            <div class="row"><span class="l">你的通勤</span><span class="r">🚇 11号线碧头→桥头 5站12分钟</span></div>
-            <div class="row"><span class="l">女友通勤</span><span class="r">🚇 11→前海湾→1号线→固戍 ~45分钟</span></div>
-        </div>
+  <!-- Hero -->
+  <div class="hero">
+    <h1>📋 购房全流程数据管理</h1>
+    <p>从看房选房、贷款签约，到装修入住、家具采购 —— 一站式跟踪与决策分析</p>
+    <div class="hero-row">
+      <div class="hero-stat"><div class="val">2</div><div class="lbl">主力备选楼盘</div></div>
+      <div class="hero-stat"><div class="val">¥2,326</div><div class="lbl">最低月供方案/月</div></div>
+      <div class="hero-stat"><div class="val">¥9.4万</div><div class="lbl">公积金余额</div></div>
+      <div class="hero-stat"><div class="val">20%</div><div class="lbl">全流程进度</div></div>
     </div>
+  </div>
 
+  <!-- 三阶段总览 -->
+  <div class="sec-hdr"><h2>📌 购房全生命周期</h2><span class="badge">3 阶段 · 12 环节</span></div>
+  <div class="g3" style="margin-bottom:22px;">
     <div class="card">
-        <div class="card-title">🥈 备选方案</div>
-        <div class="proj">
-            <div class="name">✅ 安居福汇阁 <span class="tag">✅现房</span><span class="tag">⚠️两房仅10套</span><span class="tag">🔥7.9摇号</span></div>
-            <div class="row"><span class="l">📍 位置</span><span class="r">宝安福海·育桥路90号·距桥头站步行900米</span></div>
-            <div class="row"><span class="l">💰 均价</span><span class="r"><b>30,400元/㎡</b>（官方通告）</span></div>
-            <div class="row"><span class="l">🏢 两房总价</span><span class="r"><b>约213万</b></span></div>
-            <div class="row"><span class="l">🔢 首付15%</span><span class="r"><b>约32万</b></span></div>
+      <div class="card-hdr" style="border-bottom:3px solid var(--blue);">
+        <h3>🔍 买房前 · 选房决策</h3>
+        <span class="badge" style="background:var(--blue-light);color:var(--blue);">进行中</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div class="phase-chip"><span class="chip-dot dot-blue"></span> 个人资格审核</div>
+          <div class="phase-chip"><span class="chip-dot dot-blue"></span> 楼盘数据对比</div>
+          <div class="phase-chip"><span class="chip-dot dot-blue"></span> 贷款能力测算</div>
+          <div class="phase-chip"><span class="chip-dot dot-blue"></span> 实地看房记录</div>
         </div>
-            <div class="box o">
-            <div class="row"><span class="l">月供实付</span><span class="r"><b>~3,970元/月</b></span></div>
-            <div class="row"><span class="l">你的通勤</span><span class="r">🚶 步行900米·10分钟·不用坐地铁</span></div>
-            <div class="row"><span class="l">女友通勤</span><span class="r">🚇 桥头→前海湾→1号线→固戍 ~30分钟</span></div>
-            <div class="row"><span class="l">⏱️ 最新动态</span><span class="r" style="color:var(--red);"><b>🔥 7月9日刚公证摇号，选房在即！</b></span></div>
-        </div>
+        <div class="progress"><div class="progress-bar" style="width:60%;background:var(--blue);"></div></div>
+        <div style="font-size:10px;color:var(--sub);text-align:right;">进度 60%</div>
+      </div>
     </div>
-</div>
+    <div class="card">
+      <div class="card-hdr" style="border-bottom:3px solid var(--orange);">
+        <h3>📝 买房中 · 交易签约</h3>
+        <span class="badge" style="background:var(--orange-light);color:var(--orange);">待启动</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div class="phase-chip"><span class="chip-dot dot-orange"></span> 认购签约流程</div>
+          <div class="phase-chip"><span class="chip-dot dot-orange"></span> 贷款审批办理</div>
+          <div class="phase-chip"><span class="chip-dot dot-orange"></span> 首付资金准备</div>
+          <div class="phase-chip"><span class="chip-dot dot-orange"></span> 交房验收清单</div>
+        </div>
+        <div class="progress"><div class="progress-bar" style="width:0%;background:var(--orange);"></div></div>
+        <div style="font-size:10px;color:var(--sub);text-align:right;">待购房后启动</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr" style="border-bottom:3px solid var(--green);">
+        <h3>🏡 买房后 · 装修入住</h3>
+        <span class="badge" style="background:var(--green-light);color:var(--green);">待启动</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div class="phase-chip"><span class="chip-dot dot-green"></span> 装修预算与设计</div>
+          <div class="phase-chip"><span class="chip-dot dot-green"></span> 家具家电采购</div>
+          <div class="phase-chip"><span class="chip-dot dot-green"></span> 搬家与布置</div>
+          <div class="phase-chip"><span class="chip-dot dot-green"></span> 入住后开销记账</div>
+        </div>
+        <div class="progress"><div class="progress-bar" style="width:0%;background:var(--green);"></div></div>
+        <div style="font-size:10px;color:var(--sub);text-align:right;">待交房后启动</div>
+      </div>
+    </div>
+  </div>
 
-<!-- ═══════════════ PAGE 2: 楼盘对比 ═══════════════ -->
-<div class="page" id="page-projects">
-    <div class="card">
-        <div class="card-title">📊 11个人才房全对比</div>
-        <div class="tbl-wrap">
-            <table>
-                <thead><tr><th style="text-align:left;min-width:80px;">项目</th><th>均价<br>万/㎡</th><th>两房总价</th><th>首付15%</th><th>月供实付</th><th>竣工</th><th>房源</th></tr></thead>
-                <tbody>
-                    <tr style="background:#fafff5;"><td style="text-align:left;font-weight:700;">🏆深铁璟城</td><td style="color:var(--green);font-weight:700;">2.40</td><td><b>165万</b></td><td><b>24万</b></td><td><b>2,326</b></td><td>2026.12</td><td>1200+</td></tr>
-                    <tr style="background:#fff8e1;"><td style="text-align:left;font-weight:700;">🥈福汇阁</td><td>3.04</td><td>213万</td><td>32万</td><td>3,970</td><td>2023.12</td><td>28</td></tr>
-                    <tr><td style="text-align:left;">新城华苑</td><td>3.00</td><td>210万</td><td>31万</td><td>—</td><td>2024.12</td><td>~1</td></tr>
-                    <tr><td style="text-align:left;">和瑞府</td><td>2.89</td><td>200万</td><td>30万</td><td>—</td><td>2025.12</td><td>~200</td></tr>
-                    <tr><td style="text-align:left;">御棠上府</td><td>2.74</td><td>185万</td><td>28万</td><td>—</td><td>2025.9</td><td>少量</td></tr>
-                    <tr><td style="text-align:left;">颢龙苑</td><td>2.31</td><td>157万</td><td>24万</td><td>—</td><td>2023.12</td><td>~400</td></tr>
-                    <tr class="grey"><td style="text-align:left;">海乐华府</td><td>4.92</td><td>仅三房</td><td>—</td><td>—</td><td>2021.12</td><td>~21</td></tr>
-                    <tr class="grey"><td style="text-align:left;">和郡府</td><td>4.69</td><td>~324万</td><td>~49万</td><td>—</td><td>2025.12</td><td>少量</td></tr>
-                    <tr class="grey"><td style="text-align:left;">海岸悦府</td><td>5.05</td><td>仅三房</td><td>—</td><td>—</td><td>2023.12</td><td>~128</td></tr>
-                    <tr class="grey"><td style="text-align:left;">华越龙苑</td><td>3.96</td><td>仅四房</td><td>—</td><td>—</td><td>2025.12</td><td>~530</td></tr>
-                    <tr class="grey"><td style="text-align:left;">深铁熙府</td><td>5.90</td><td>~350万</td><td>~53万</td><td>—</td><td>2026.12</td><td>有房</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <div style="font-size:11px;color:var(--sub);margin-top:6px;">灰色 = 不推荐（价格过高 / 位置太远）</div>
+  <!-- 楼盘卡片 -->
+  <div class="sec-hdr"><h2>🏢 主力备选楼盘</h2><a href="#" class="btn btn-out btn-xs" data-page="compare">查看全部 11 盘 →</a></div>
+  <div class="g2" style="margin-bottom:22px;">
+    <div class="prop-card rec">
+      <div class="prop-tags"><span class="tag tag-g">🏆 首推</span><span class="tag tag-o">期房</span></div>
+      <div class="prop-name">深铁璟城</div>
+      <div class="prop-meta">宝安松岗 · 11号线碧头站上盖TOD · 2026年12月交房</div>
+      <div class="prop-stats">
+        <div class="prop-stat"><div class="val" style="color:var(--green);">2.40万</div><div class="lbl">均价/㎡</div></div>
+        <div class="prop-stat"><div class="val">165万</div><div class="lbl">两房总价</div></div>
+        <div class="prop-stat"><div class="val" style="color:var(--green);">24万</div><div class="lbl">首付15%</div></div>
+        <div class="prop-stat"><div class="val" style="color:var(--green);">2,326</div><div class="lbl">月供实付/月</div></div>
+      </div>
+      <div class="prop-act"><a href="#" class="btn btn-pri btn-xs" data-page="compare">📊 对比分析</a><a href="#" class="btn btn-out btn-xs">📍 看房记录</a></div>
     </div>
+    <div class="prop-card">
+      <div class="prop-tags"><span class="tag tag-o">🥈 备选</span><span class="tag tag-b">现房</span><span class="tag tag-r">🔥 7.9摇号</span></div>
+      <div class="prop-name">安居福汇阁</div>
+      <div class="prop-meta">宝安福海 · 育桥路90号 · 步行900m到桥头站 · 现房即买即住</div>
+      <div class="prop-stats">
+        <div class="prop-stat"><div class="val" style="color:var(--orange);">3.04万</div><div class="lbl">均价/㎡</div></div>
+        <div class="prop-stat"><div class="val">213万</div><div class="lbl">两房总价</div></div>
+        <div class="prop-stat"><div class="val" style="color:var(--orange);">32万</div><div class="lbl">首付15%</div></div>
+        <div class="prop-stat"><div class="val" style="color:var(--orange);">3,970</div><div class="lbl">月供实付/月</div></div>
+      </div>
+      <div class="prop-act"><a href="#" class="btn btn-out btn-xs" data-page="compare">📊 对比分析</a><a href="#" class="btn btn-out btn-xs">📍 看房记录</a></div>
+    </div>
+  </div>
 
+  <!-- 时间线 + 快捷面板 -->
+  <div class="g23" style="margin-bottom:22px;">
     <div class="card">
-        <div class="card-title">🏘️ 翻身四杰（邻里间家园附近）</div>
-        <div class="bow">
-            <div class="row"><span class="l">🏠 庆宜华苑</span><span class="r">~5万/㎡ · 两房68㎡ · <b>~340万</b></span></div>
-            <div class="row"><span class="l">🏠 海乐华府</span><span class="r">4.92万/㎡ · 仅三房 · <b>~418万</b></span></div>
-            <div class="row"><span class="l">🏠 海岸悦府</span><span class="r">5.05万/㎡ · 仅三房 · <b>~424万</b></span></div>
-            <div class="row"><span class="l">🏠 天健和郡府</span><span class="r">4.69万/㎡ · 两房 · <b>~324万</b></span></div>
-        </div>
-        <div class="box o" style="margin-top:10px;">
-            <div style="font-weight:700;font-size:13px;">⚠️ 翻身四杰位置好，但价格偏高</div>
-            <div style="font-size:12px;color:#666;">两房340万起，首付51万+，月供占收入40%</div>
-        </div>
+      <div class="card-hdr"><h3>🗺️ 全流程时间线</h3><span class="badge" style="background:var(--blue-light);color:var(--blue);">12步</span></div>
+      <div class="card-body"><div class="timeline">
+        <div class="tl-phase" style="color:var(--blue);">🔍 买房前</div>
+        <div class="tl-item active"><div class="tl-t">① 资格审核</div><div class="tl-d">深户状态、社保、公积金确认</div></div>
+        <div class="tl-item active"><div class="tl-t">② 数据采集</div><div class="tl-d">11个楼盘信息入库对比</div></div>
+        <div class="tl-item done"><div class="tl-t">③ 贷款测算</div><div class="tl-d">公积金176万·月供模拟</div></div>
+        <div class="tl-item"><div class="tl-t">④ 实地看房</div><div class="tl-d">深铁璟城·福汇阁勘察</div></div>
+        <div class="tl-phase" style="color:var(--orange);margin-top:6px;">📝 买房中</div>
+        <div class="tl-item"><div class="tl-t">⑤ 认购签约</div><div class="tl-d">选房→交订金→签认购书</div></div>
+        <div class="tl-item"><div class="tl-t">⑥ 资格贷款</div><div class="tl-d">线上申请·公积金/商贷</div></div>
+        <div class="tl-item"><div class="tl-t">⑦ 首付签合同</div><div class="tl-d">付首付·正式买卖合同</div></div>
+        <div class="tl-item"><div class="tl-t">⑧ 交房验收</div><div class="tl-d">验房清单·问题跟进</div></div>
+        <div class="tl-phase" style="color:var(--green);margin-top:6px;">🏡 买房后</div>
+        <div class="tl-item"><div class="tl-t">⑨ 装修设计与预算</div><div class="tl-d">户型分析·风格·报价对比</div></div>
+        <div class="tl-item"><div class="tl-t">⑩ 家具家电采购</div><div class="tl-d">全屋清单·比价·排期</div></div>
+        <div class="tl-item"><div class="tl-t">⑪ 搬家与布置</div><div class="tl-d">打包计划·软装·入住</div></div>
+        <div class="tl-item"><div class="tl-t">⑫ 入住后管理</div><div class="tl-d">月开销·物业·房贷跟踪</div></div>
+      </div></div>
     </div>
-</div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-hdr"><h3>⚡ 快捷操作</h3></div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:7px;">
+          <a href="#" class="btn btn-pri" style="justify-content:center;" data-page="profile">👤 查看/编辑个人档案</a>
+          <a href="#" class="btn btn-out" style="justify-content:center;" data-page="compare">📊 楼盘数据全对比</a>
+          <a href="#" class="btn btn-out" style="justify-content:center;" data-page="loan">💰 贷款测算器</a>
+          <a href="#" class="btn btn-out" style="justify-content:center;" data-page="reno">📐 装修预算表</a>
+          <a href="#" class="btn btn-out" style="justify-content:center;" data-page="furniture">🛋️ 家具采购清单</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><h3>📈 财务快照</h3></div>
+        <div class="card-body">
+          <div class="sr"><span class="sr-l">月到手收入</span><span class="sr-r">¥21,500</span></div>
+          <div class="sr"><span class="sr-l">公积金月缴</span><span class="sr-r" style="color:var(--green);">+¥3,300</span></div>
+          <div class="sr"><span class="sr-l">公积金余额</span><span class="sr-r">¥94,000</span></div>
+          <div class="sr"><span class="sr-l">当前月租</span><span class="sr-r" style="color:var(--red);">−¥4,000</span></div>
+          <div class="sr"><span class="sr-l">预算首付上限</span><span class="sr-r" style="color:var(--green);">¥250,000</span></div>
+          <div class="sr" style="font-weight:700;"><span>🏦 公积金贷上限</span><span style="color:var(--blue);">¥1,760,000（家庭）</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- ═══════════════ PAGE 3: 详情 ═══════════════ -->
-<div class="page" id="page-detail">
-    <div class="sec">🏆 深铁璟城 · 详细测算</div>
-    <div class="card">
-        <div class="card-title">💰 贷款明细（两房 69㎡· 165万）</div>
-        <div class="box g" style="margin:0;">
-            <div class="row"><span class="l">总价</span><span class="r">69㎡ × 24,000 = 165.6万</span></div>
-            <div class="row"><span class="l">首付15%</span><span class="r" style="color:var(--green);font-weight:700;">24.8万</span></div>
-            <div class="row"><span class="l">&nbsp;├ 公积金余额</span><span class="r">9.4万（可用）</span></div>
-            <div class="row"><span class="l">&nbsp;└ 自掏现金</span><span class="r" style="color:var(--green);font-weight:700;">15.4万</span></div>
-            <div class="row"><span class="l">贷款</span><span class="r">140.8万 · 纯公积金2.6% · 30年</span></div>
-            <div class="row"><span class="l">月供总额</span><span class="r">5,626元/月</span></div>
-            <div class="row"><span class="l">公积金冲抵</span><span class="r" style="color:var(--green);">−3,300元/月</span></div>
-            <div class="row"><span class="l"><b>月实付现金</b></span><span class="r"><span class="big">2,326</span> 元/月</span></div>
-        </div>
-    </div>
+  <!-- 全量楼盘表 -->
+  <div class="sec-hdr"><h2>📊 全量楼盘数据库</h2><span class="badge">11个项目</span></div>
+  <div class="card" style="margin-bottom:22px;"><div class="tbl-wrap">
+    <table>
+      <thead><tr><th>项目</th><th>区域</th><th>均价</th><th>两房总价</th><th>首付15%</th><th>月供实付</th><th>交付</th><th>房源</th><th>评分</th><th></th></tr></thead>
+      <tbody>
+        <tr style="background:#f6fdf9;"><td class="hl">🏆 深铁璟城</td><td>松岗</td><td style="color:var(--green);font-weight:700;">2.40万</td><td class="hl">165万</td><td>24万</td><td style="color:var(--green);">2,326</td><td>2026.12</td><td>1200+</td><td style="color:var(--green);font-weight:700;">85</td><td><a href="#" class="btn btn-out btn-xs" data-page="compare">详情</a></td></tr>
+        <tr style="background:#fffbf0;"><td class="hl">🥈 安居福汇阁</td><td>福海</td><td style="color:var(--orange);font-weight:700;">3.04万</td><td class="hl">213万</td><td>32万</td><td style="color:var(--orange);">3,970</td><td>2023.12 ✅</td><td>28</td><td style="color:var(--blue);font-weight:700;">80</td><td><a href="#" class="btn btn-out btn-xs" data-page="compare">详情</a></td></tr>
+        <tr><td>新城华苑</td><td>沙井</td><td>3.00万</td><td>210万</td><td>31万</td><td>—</td><td>2024.12</td><td>1</td><td>35</td><td><a href="#" class="btn btn-gh btn-xs">查看</a></td></tr>
+        <tr><td>和瑞府</td><td>光明</td><td>2.89万</td><td>200万</td><td>30万</td><td>—</td><td>2025.12</td><td>~200</td><td>30</td><td><a href="#" class="btn btn-gh btn-xs">查看</a></td></tr>
+        <tr><td>御棠上府</td><td>光明</td><td>2.74万</td><td>185万</td><td>28万</td><td>—</td><td>2025.09</td><td>少量</td><td>25</td><td><a href="#" class="btn btn-gh btn-xs">查看</a></td></tr>
+        <tr><td>颢龙苑</td><td>龙岗</td><td>2.31万</td><td>157万</td><td>24万</td><td>—</td><td>2023.12</td><td>~400</td><td>35</td><td><a href="#" class="btn btn-gh btn-xs">查看</a></td></tr>
+        <tr style="color:#999;"><td>海乐华府</td><td>新安</td><td>4.92万</td><td>仅三房</td><td>—</td><td>—</td><td>2021.12</td><td>21</td><td>45</td><td><a href="#" class="btn btn-gh btn-xs">查看</a></td></tr>
+        <tr style="color:#999;"><td>和郡府</td><td>新安</td><td>4.69万</td><td>324万</td><td>49万</td><td>—</td><td>2025.12</td><td>少量</td><td>45</td><td><a href="#" class="btn btn-gh btn-xs">查看</a></td></tr>
+      </tbody>
+    </table>
+  </div><div style="padding:10px 18px;text-align:center;border-top:1px solid var(--border);"><a href="#" class="btn btn-out btn-xs" data-page="compare">查看全部 11 个楼盘详细对比 →</a></div></div>
 
-    <div class="card">
-        <div class="card-title">🚇 通勤分析</div>
-        <div class="box b">
-            <div class="row"><span class="l">🧑 你 → 桥头</span><span class="r"><b>11号线5站 · 12分钟</b></span></div>
-            <div class="row"><span class="l">👩 女友 → 固戍</span><span class="r">11→前海湾→1号线 · ~45分钟</span></div>
-            <div class="row"><span class="l">👩 女友 → 平峦山</span><span class="r">11→前海湾→12号线 · ~40分钟</span></div>
-        </div>
-        <div style="font-size:12px;color:var(--sub);margin-top:6px;">
-            📍 碧头站上盖TOD · 1站到松岗换乘6号线/12号线 · 即买到即排队入住
-        </div>
-    </div>
+</div><div class="footer">购房全流程管理系统 · 数据来源：深圳住建局官网 · 更新于 2026年7月</div>
+</main>
 
-    <div class="sec" style="margin-top:16px;">🥈 安居福汇阁 · 最新详细测算</div>
-    <div class="card">
-        <div class="card-title">📋 基本信息（来源：住保售〔2026〕046号通告）</div>
-        <div class="row"><span class="l">📍 地址</span><span class="r">宝安福海街道育桥路90号</span></div>
-        <div class="row"><span class="l">🏠 性质</span><span class="r">人才配售住房（安居型商品房）</span></div>
-        <div class="row"><span class="l">📅 竣工</span><span class="r"><b>2023年12月</b>· 现房即买即住</span></div>
-        <div class="row"><span class="l">🏢 本次房源</span><span class="r" style="color:var(--orange);"><b>28套</b>（两房10套·三房18套）</span></div>
-        <div class="row"><span class="l">📏 两房面积</span><span class="r">约70㎡（毛坯交付）</span></div>
-        <div class="row"><span class="l">🔥 最新进展</span><span class="r" style="color:var(--red);"><b>7月9日已完成公证摇号</b></span></div>
-    </div>
-    <div class="card">
-        <div class="card-title">💰 贷款明细（两房 70㎡· 213万· 均价3.04万）</div>
-        <div class="box o" style="margin:0;">
-            <div class="row"><span class="l">总价</span><span class="r">70㎡ × 30,400 = 212.8万</span></div>
-            <div class="row"><span class="l">首付15%</span><span class="r" style="font-weight:700;">31.9万</span></div>
-            <div class="row"><span class="l">&nbsp;├ 公积金余额</span><span class="r">9.4万（可用）</span></div>
-            <div class="row"><span class="l">&nbsp;└ 自掏现金</span><span class="r" style="font-weight:700;">22.5万</span></div>
-            <div class="row"><span class="l">贷款</span><span class="r">180.9万 · 组合贷（公积176+商贷4.9）· 约30年</span></div>
-            <div class="row"><span class="l">月供总额</span><span class="r">≈7,270元/月</span></div>
-            <div class="row"><span class="l">公积金冲抵</span><span class="r" style="color:var(--orange);">−3,300元/月</span></div>
-            <div class="row"><span class="l"><b>月实付现金</b></span><span class="r"><b>≈3,970元/月</b></span></div>
-        </div>
-    </div>
+<!-- ═══════════════ PAGE: 楼盘对比 ═══════════════ -->
+<main class="page" id="pg-compare">
+<div class="container">
 
-    <div class="card">
-        <div class="card-title">🚇 通勤分析</div>
-        <div class="box b">
-            <div class="row"><span class="l">🧑 你 → 桥头</span><span class="r"><b>步行900米 · 10分钟 ✅</b></span></div>
-            <div class="row"><span class="l">👩 女友 → 固戍</span><span class="r">11号线→前海湾换1号线→固戍 · ~30分钟</span></div>
-            <div class="row"><span class="l">👩 女友 → 平峦山</span><span class="r">11号线→前海湾换12号线→平峦山 · ~35分钟</span></div>
-        </div>
-        <div style="font-size:12px;color:var(--sub);margin-top:6px;">
-            📍 距桥头站900米 · 走路骑车都方便 · 现房即买即住不用等
-        </div>
-    </div>
+  <div class="sec-hdr" style="margin-top:8px;"><h2>📊 楼盘全对比分析</h2><span class="badge">11个项目 · 7维度评分</span></div>
 
-    <div class="card">
-        <div class="card-title">🆚 两方案直接对比</div>
-        <div class="stats">
-            <div class="stat"><div class="val">2,326</div><div class="lbl">深铁璟城 月供实付</div></div>
-            <div class="stat hl"><div class="val">3,970</div><div class="lbl">福汇阁 月供实付</div></div>
-        </div>
-        <div style="text-align:center;font-size:13px;color:var(--sub);margin-top:6px;">
-            💡 深铁璟城每月省 <b>1,644元</b> · 一年省 19,728元 · 但福汇阁<b>通勤碾压+现房</b>
-        </div>
+  <!-- 筛选栏 -->
+  <div class="cmp-bar">
+    <div class="cmp-title">筛选条件</div>
+    <div class="cmp-filters">
+      <span class="filter-chip active" data-filter="all">全部</span>
+      <span class="filter-chip" data-filter="recommend">⭐ 推荐</span>
+      <span class="filter-chip" data-filter="ready">✅ 现房</span>
+      <span class="filter-chip" data-filter="cheap">💰 低价(&lt;2.5万)</span>
+      <span class="filter-chip" data-filter="suitable">🎯 适合我</span>
     </div>
+  </div>
 
-    <div class="card">
-        <div class="card-title">🏠 福汇阁 vs 深铁璟城 核心差异</div>
-        <div class="tbl-wrap">
-            <table>
-                <thead><tr><th style="text-align:left;">对比</th><th>🏆深铁璟城</th><th>🥈福汇阁</th></tr></thead>
-                <tbody>
-                    <tr><td style="text-align:left;">均价</td><td style="color:var(--green);"><b>2.40万</b></td><td>3.04万</td></tr>
-                    <tr><td style="text-align:left;">状态</td><td>🏗️期房·2026.12交</td><td style="color:var(--green);"><b>✅现房·即买即住</b></td></tr>
-                    <tr><td style="text-align:left;">你的通勤</td><td>地铁5站·12分钟</td><td style="color:var(--green);"><b>步行900米·10分钟</b></td></tr>
-                    <tr><td style="text-align:left;">女友通勤</td><td style="color:var(--green);">~45分钟</td><td style="color:var(--green);"><b>~30分钟</b></td></tr>
-                    <tr><td style="text-align:left;">月供实付</td><td style="color:var(--green);"><b>2,326元</b></td><td>3,970元</td></tr>
-                    <tr><td style="text-align:left;">首付自筹</td><td style="color:var(--green);"><b>15.4万</b></td><td>22.5万</td></tr>
-                    <tr><td style="text-align:left;">房源</td><td style="color:var(--green);"><b>1,200套</b>·充足</td><td>⚠️仅28套·已摇号</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="box o" style="margin-top:10px;">
-            <div style="font-weight:700;font-size:13px;">🎯 结论：深铁璟城更省钱，福汇阁更幸福</div>
-            <div style="font-size:12px;color:#666;">走路10分钟上班 vs 每月省1,644元 — 看你怎么取舍</div>
-        </div>
-    </div>
-</div>
+  <!-- 顶部对比表 -->
+  <div class="card" style="margin-bottom:16px;"><div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>排名</th><th>项目</th><th>区域</th><th>均价</th><th>两房总价</th><th>首付</th><th>月供</th><th>你通勤</th><th>女友通勤</th><th>交付</th><th>房源</th><th>评分</th>
+      </tr></thead>
+      <tbody id="cmpTableBody"></tbody>
+    </table>
+  </div></div>
 
-<!-- ═══════════════ PAGE 4: 政策 ═══════════════ -->
-<div class="page" id="page-policy">
-    <div class="card">
-        <div class="card-title">📋 安居房 vs 人才房</div>
-        <div class="tbl-wrap">
-            <table>
-                <thead><tr><th style="text-align:left;">对比项</th><th>🏠安居房</th><th>🏗️人才房</th></tr></thead>
-                <tbody>
-                    <tr><td style="text-align:left;">学历</td><td>无要求</td><td><b>本科</b></td></tr>
-                    <tr><td style="text-align:left;">深户</td><td>全家深户</td><td>申请人深户即可</td></tr>
-                    <tr><td style="text-align:left;">社保</td><td>5年（人才3年）</td><td>3年</td></tr>
-                    <tr><td style="text-align:left;">排队</td><td>摇号（靠运气）</td><td><b>常态化·直接选</b></td></tr>
-                    <tr><td style="text-align:left;">产权</td><td>满10年可上市</td><td>满10年可上市</td></tr>
-                    <tr style="background:#fafff5;"><td style="text-align:left;font-weight:700;">你们</td><td colspan="2" style="font-weight:700;color:var(--green);">✅ 两条路都能走</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-title">💍 结婚 vs 不结婚 · 贷款差别</div>
-        <div class="stats">
-            <div class="stat" style="background:#fff3e0;"><div class="val" style="color:var(--orange);">96万</div><div class="lbl">未婚·个人公积金上限</div></div>
-            <div class="stat hl"><div class="val">176万</div><div class="lbl">已婚·家庭公积金上限</div></div>
-        </div>
-        <div class="box g" style="margin-top:10px;">
-            <div style="font-size:13px;">💡 <b>建议节奏：</b>看房选房 → 交定金 → 领证 → 家庭名义签合同 → 纯公积金贷176万 → 月供仅2,326</div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-title">🛒 申购流程（常态化·不用摇号）</div>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-t">住建局官网查房源+预约</div><div class="step-d">zjj.sz.gov.cn → 住房保障服务 → 面向人才配售住房申请</div></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-t">去售楼处选房</div><div class="step-d">带身份证·学历证·户口本 → 选房 → 交2万定金 → 签认购书</div></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-t">线上提交资格审核</div><div class="step-d">2天内登录住建局提交材料 · 约5个工作日公示</div></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-t">签合同·交首付·办贷款</div><div class="step-d">审核通过 → 签买卖合同 → 交首付 → 公积金贷款 → 等收房</div></div></div>
-        <div style="background:#f8f9fb;padding:10px;border-radius:8px;font-size:12px;">
-            🚇 深铁璟城：11号线碧头站上盖&nbsp;&nbsp;|&nbsp;&nbsp;🚶 福汇阁：桥头站步行900米
-        </div>
-    </div>
-</div>
-
-<!-- ═══════════════ PAGE 6: 申购 ═══════════════ -->
-<div class="page" id="page-apply">
-    <div class="card">
-        <div class="card-title">🚀 各楼盘怎么申购</div>
-        <div style="font-size:13px;color:#666;margin-bottom:8px;">以下两个楼盘均处于<b>常态化配售</b>，👈不用摇号·直接去售楼处选房·先到先得</div>
-    </div>
+  <!-- 推荐项目详情卡片 -->
+  <div class="sec-hdr"><h2>⭐ 重点推荐 · 详细对比</h2></div>
+  <div class="g2" style="margin-bottom:16px;">
 
     <!-- 深铁璟城 -->
-    <div class="card">
-        <div class="card-title">🏆 深铁璟城 · 申购指南</div>
-        <div class="row"><span class="l">📍 售楼处地址</span><span class="r">宝安松岗·松福大道与朗碧路交汇处</span></div>
-        <div class="row"><span class="l">🚇 怎么去</span><span class="r"><b>11号线碧头站</b>上盖，出站即到</span></div>
-        <div class="row"><span class="l">📞 咨询电话</span><span class="r"><b>0755-83899888</b></span></div>
-        <div class="row"><span class="l">🕐 工作时间</span><span class="r">每天 9:00-18:00</span></div>
-        <div class="row"><span class="l">📦 可选房源</span><span class="r" style="color:var(--green);"><b>~1,200套</b> 两房+三房</span></div>
-        <div class="row"><span class="l">💰 订金</span><span class="r">选房后现场交 2万元</span></div>
-        <a class="lnk tel" href="tel:0755-83899888"><span class="lnk-icon">📞</span> 电话咨询深铁璟城</a>
-        <a class="lnk outline" href="https://zjj.sz.gov.cn/ztfw/zfbz/?from=index" target="_blank"><span class="lnk-icon">🔗</span> 官网查剩余房源（白色=可选）</a>
-        <a class="lnk" href="https://webapp.mypaas.com.cn/wh-zyx/stzy/prod/0.2.6/" target="_blank"><span class="lnk-icon">📅</span> 预约深铁璟城现场看房</a>
-        <div style="font-size:12px;color:var(--sub);margin-top:8px;">
-            💡 看房可网上VR看，也可预约去现场。房源充足慢慢挑。
+    <div class="cmp-detail-card rec" style="position:relative;">
+      <div class="cmp-rank">🥇</div>
+      <div style="position:relative;z-index:1;">
+        <div class="cmp-name">深铁璟城</div>
+        <div class="cmp-addr">📍 宝安松岗 · 11号线碧头站上盖TOD</div>
+        <div class="cmp-tags"><span class="tag tag-g">🏆 首推</span><span class="tag tag-o">期房</span><span class="tag tag-b">低月供</span></div>
+        <div class="cmp-stats">
+          <div class="cmp-stat" style="background:#ecfdf5;"><div class="cmp-val" style="color:var(--green);">2.40万</div><div class="cmp-lbl">均价/㎡</div></div>
+          <div class="cmp-stat"><div class="cmp-val">165万</div><div class="cmp-lbl">两房总价(~69㎡)</div></div>
+          <div class="cmp-stat" style="background:#ecfdf5;"><div class="cmp-val" style="color:var(--green);">24万</div><div class="cmp-lbl">首付15%</div></div>
+          <div class="cmp-stat" style="background:#ecfdf5;"><div class="cmp-val" style="color:var(--green);">2,326</div><div class="cmp-lbl">月供实付/月</div></div>
         </div>
-    </div>
-
-    <!-- 福汇阁 -->
-    <div class="card">
-        <div class="card-title">🥈 安居福汇阁 · 申购指南（🔥 最新）</div>
-        <div class="row"><span class="l">📍 售楼处地址</span><span class="r">宝安福海·育桥路90号</span></div>
-        <div class="row"><span class="l">🚶 怎么去</span><span class="r"><b>11号线桥头站</b>出站步行约900米</span></div>
-        <div class="row"><span class="l">🏠 性质</span><span class="r">人才房 · 安居型商品房 · 满10年可上市</span></div>
-        <div class="row"><span class="l">💰 均价</span><span class="r"><b>30,400元/㎡</b>（毛坯）</span></div>
-        <div class="row"><span class="l">🏢 本次配售</span><span class="r" style="color:var(--orange);"><b>28套</b>（两房10套+三房18套）</span></div>
-        <div class="row"><span class="l">📅 竣工</span><span class="r">2023年12月·现房即买即住</span></div>
-        <div class="row"><span class="l">🔥 最新进展</span><span class="r" style="color:var(--red);"><b>7月9日已公证摇号·选房在即</b></span></div>
-        <div class="row"><span class="l">📋 通告编号</span><span class="r">住保售〔2026〕046号</span></div>
-        <a class="lnk outline" href="https://zjj.sz.gov.cn/ztfw/zfbz/?from=index" target="_blank"><span class="lnk-icon">🔗</span> 官网查福汇阁剩余房源</a>
-        <a class="lnk outline" href="https://www.szajjt.com/detail.aspx?cid=17001&siteid=27546" target="_blank"><span class="lnk-icon">📄</span> 查看官方配售通知原文</a>
-        <a class="lnk outline" href="https://szgzc.net.cn/xxgk/tzgg/202607/t20260709_1150.html" target="_blank"><span class="lnk-icon">🎲</span> 查看7.9公证摇号结果</a>
-        <div style="font-size:12px;color:var(--orange);margin-top:6px;">
-            ⚠️ 本次只有<b>10套两房</b>，且已摇号。关注后续是否有退房或常态化配售！
+        <div class="cmp-commute">
+          <div class="cr">🧑<span>你→桥头</span><span class="cr-time" style="color:var(--green);">🚇 5站·12分钟</span></div>
+          <div class="cr">👩<span>女友→固戍</span><span class="cr-time" style="color:var(--orange);">🚇 换乘1次·~45分钟</span></div>
         </div>
-    </div>
-
-    <!-- 通用流程 -->
-    <div class="card">
-        <div class="card-title">📋 通用申购流程</div>
-        <div style="font-size:13px;color:#666;margin-bottom:10px;">所有人申购人才房的唯一官方入口：</div>
-        <a class="lnk" href="https://zjj.sz.gov.cn/ztfw/zfbz/?from=index" target="_blank"><span class="lnk-icon">🏛️</span> 深圳市住房和建设局 · 住房保障服务</a>
-        <div style="margin-top:12px;">
-            <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-t">官网预约</div><div class="step-d">上面链接→住房保障服务→面向人才配售住房申请→选项目→预约登记</div></div></div>
-            <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-t">去售楼处选房</div><div class="step-d">带<a href="#" style="color:var(--blue);">材料清单↓</a>→挑房号→交2万订金→签认购书</div></div></div>
-            <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-t">线上提交审核</div><div class="step-d">签完认购书2天内，回住建局网站提交资格申请</div></div></div>
-            <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-t">签合同·交首付·贷款</div><div class="step-d">审核通过→签买卖合同→交首付→办公积金贷款→等收房</div></div></div>
+        <div style="font-size:12px;color:var(--sub);margin-bottom:10px;">
+          💰 首付自筹仅15.4万 · 公积金余额9.4万可用 · 纯公积金贷140.8万(2.6%)
         </div>
+        <div class="prop-act"><button class="btn btn-pri btn-xs">🔍 详细分析</button><button class="btn btn-out btn-xs">📍 看房记录</button></div>
+      </div>
     </div>
 
-    <!-- 所需材料 -->
-    <div class="card">
-        <div class="card-title">📁 去售楼处要带的材料</div>
-        <div style="font-size:13px;">
-            <div style="padding:6px 0;">✅ 身份证（你和女朋友的）</div>
-            <div style="padding:6px 0;">✅ 户口本（原件）</div>
-            <div style="padding:6px 0;">✅ 本科毕业证/学位证</div>
-            <div style="padding:6px 0;">✅ 社保缴费清单（i深圳/i人社APP打印）</div>
-            <div style="padding:6px 0;">✅ 无房证明（i深圳APP打印）</div>
-            <div style="padding:6px 0;">✅ 结婚证（如已领证）</div>
-            <div style="padding:6px 0;">💳 2万元订金（刷卡/手机转账）</div>
+    <!-- 安居福汇阁 -->
+    <div class="cmp-detail-card" style="position:relative;">
+      <div class="cmp-rank">🥈</div>
+      <div style="position:relative;z-index:1;">
+        <div class="cmp-name">安居福汇阁</div>
+        <div class="cmp-addr">📍 宝安福海·育桥路90号·步行900m到桥头站</div>
+        <div class="cmp-tags"><span class="tag tag-o">🥈 备选</span><span class="tag tag-b">现房</span><span class="tag tag-r">🔥 7.9摇号</span></div>
+        <div class="cmp-stats">
+          <div class="cmp-stat" style="background:#fff7ed;"><div class="cmp-val" style="color:var(--orange);">3.04万</div><div class="cmp-lbl">均价/㎡</div></div>
+          <div class="cmp-stat"><div class="cmp-val">213万</div><div class="cmp-lbl">两房总价(~70㎡)</div></div>
+          <div class="cmp-stat" style="background:#fff7ed;"><div class="cmp-val" style="color:var(--orange);">32万</div><div class="cmp-lbl">首付15%</div></div>
+          <div class="cmp-stat" style="background:#fff7ed;"><div class="cmp-val" style="color:var(--orange);">3,970</div><div class="cmp-lbl">月供实付/月</div></div>
         </div>
-    </div>
-
-    <!-- FAQ -->
-    <div class="card">
-        <div class="card-title">❓ 常见问题</div>
-        <div style="font-size:13px;">
-            <div style="padding:8px 0;border-bottom:1px solid #f0f0f5;">
-                <b>Q: 没结婚可以去选房吗？</b><br>
-                <span style="color:#666;">A: 可以，以个人名义申请。但建议选好房后尽快领证，家庭公积金贷款上限176万 vs 个人96万。</span>
-            </div>
-            <div style="padding:8px 0;border-bottom:1px solid #f0f0f5;">
-                <b>Q: 女朋友不是深户能申请吗？</b><br>
-                <span style="color:#666;">A: 人才房申请方深户即可，配偶不限。你们都是深户，两条路都能走。</span>
-            </div>
-            <div style="padding:8px 0;border-bottom:1px solid #f0f0f5;">
-                <b>Q: 选房后可以反悔吗？</b><br>
-                <span style="color:#666;">A: 签认购书前可以。签了认购书但放弃，2万订金不退。签合同后反悔按违约责任处理。</span>
-            </div>
-            <div style="padding:8px 0;border-bottom:1px solid #f0f0f5;">
-                <b>Q: 怎么看还有哪些房源？</b><br>
-                <span style="color:#666;">A: 上住建局官网→住房保障服务→面向人才配售住房申请→房源公示。白色格子=可以选，橙色=已被选。</span>
-            </div>
-            <div style="padding:8px 0;">
-                <b>Q: 贷款什么时候办？</b><br>
-                <span style="color:#666;">A: 签完买卖合同后。公积金贷款在签合同后申请，审批约2-4周。建议提前咨询公积金中心（12329）。</span>
-            </div>
+        <div class="cmp-commute">
+          <div class="cr">🧑<span>你→桥头</span><span class="cr-time" style="color:var(--green);">🚶 步行900m·10分钟</span></div>
+          <div class="cr">👩<span>女友→固戍</span><span class="cr-time" style="color:var(--blue);">🚇 换乘1次·~30分钟</span></div>
         </div>
-    </div>
-</div>
-
-<!-- ═══════════════ PAGE 5: 档案 ═══════════════ -->
-<div class="page" id="page-profile">
-    <div class="card">
-        <div class="card-title">👤 我的档案</div>
-        <div class="row"><span class="l">到手工资</span><span class="r"><b>13,500元/月</b></span></div>
-        <div class="row"><span class="l">公积金余额</span><span class="r">60,000元</span></div>
-        <div class="row"><span class="l">公积金月缴</span><span class="r">1,600元/月</span></div>
-        <div class="row"><span class="l">工作地点</span><span class="r">桥头站（11号线）</span></div>
-        <div class="row"><span class="l">深户</span><span class="r" style="color:var(--green);">✅ 已确认</span></div>
-    </div>
-
-    <div class="card">
-        <div class="card-title">👩 女朋友档案</div>
-        <div class="row"><span class="l">到手工资</span><span class="r"><b>8,000元/月</b></span></div>
-        <div class="row"><span class="l">公积金余额</span><span class="r">34,000元</span></div>
-        <div class="row"><span class="l">公积金月缴</span><span class="r">1,700元/月</span></div>
-        <div class="row"><span class="l">工作地点</span><span class="r">固戍站（1号线，明年搬迁）</span></div>
-        <div class="row"><span class="l">当前地点</span><span class="r">平峦山站（12号线）</span></div>
-        <div class="row"><span class="l">深户</span><span class="r" style="color:var(--green);">✅ 已确认</span></div>
-    </div>
-
-    <div class="card">
-        <div class="card-title">✅ 行动清单</div>
-        <div class="ck done">确认两人深户状态</div>
-        <div class="ck">准备学历证书、社保清单</div>
-        <div class="ck"><b>本周末：去深铁璟城售楼处看房</b></div>
-        <div class="ck">关注福汇阁后续是否有退房/常态化配售</div>
-        <div class="ck done">福汇阁0746批次已摇号（7月9日），关注选房结果</div>
-        <div class="ck">核实两人社保累计年限</div>
-        <div class="ck">选好房后规划领证时间</div>
-    </div>
-
-    <div class="card">
-        <div class="card-title">🗺️ 通勤参考</div>
-        <div style="font-size:12px;color:#666;line-height:1.8;">
-            <b>11号线</b>：碧头 → 松岗 → 后亭 → 沙井 → 马安山 → 塘尾 → 桥头(你) → 福永 → 机场 → 碧海湾 → 宝安 → 前海湾<br>
-            <b>1号线</b>：机场东 → 后瑞 → 固戍(女友明年) → 西乡 → 坪洲 → 前海湾 → 宝安中心<br>
-            <b>12号线</b>：... → 灵芝 → 上川 → 流塘 → 宝安客运 → 平峦山(女友当前) → 西乡桃源 ...
+        <div style="font-size:12px;color:var(--sub);margin-bottom:10px;">
+          ✅ 现房即买即住 · 2023年12月已竣工 · 毛坯交付 · 两房仅10套 · 7.9已摇号
         </div>
+        <div class="prop-act"><button class="btn btn-out btn-xs">🔍 详细分析</button><button class="btn btn-out btn-xs">📍 看房记录</button></div>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- ═══════════════ Bottom Nav ═══════════════ -->
-<div class="bottom-nav">
-    <div class="nav-item active" data-page="home" data-title="🏠 购房分析 · 首页">
-        <div class="icon">🏠</div><div>首页</div>
+  <!-- 六维雷达对比图 (文字版) -->
+  <div class="sec-hdr"><h2>🎯 六维雷达对比</h2><span class="badge">深铁璟城 vs 安居福汇阁</span></div>
+  <div class="g2" style="margin-bottom:22px;">
+    <div class="radar-wrap">
+      <div class="radar-title" style="color:var(--green);">🏆 深铁璟城</div>
+      <div class="radar-row"><span class="rr-l">价格优势</span><div class="rr-bar"><div class="rr-fill" style="width:95%;background:var(--green);"></div></div><span class="rr-val">95</span></div>
+      <div class="radar-row"><span class="rr-l">通勤便利</span><div class="rr-bar"><div class="rr-fill" style="width:70%;background:var(--blue);"></div></div><span class="rr-val">70</span></div>
+      <div class="radar-row"><span class="rr-l">现房即住</span><div class="rr-bar"><div class="rr-fill" style="width:50%;background:var(--orange);"></div></div><span class="rr-val">50</span></div>
+      <div class="radar-row"><span class="rr-l">房源充足</span><div class="rr-bar"><div class="rr-fill" style="width:100%;background:var(--green);"></div></div><span class="rr-val">100</span></div>
+      <div class="radar-row"><span class="rr-l">地段价值</span><div class="rr-bar"><div class="rr-fill" style="width:55%;background:var(--blue);"></div></div><span class="rr-val">55</span></div>
+      <div class="radar-row"><span class="rr-l">生活配套</span><div class="rr-bar"><div class="rr-fill" style="width:65%;background:var(--purple);"></div></div><span class="rr-val">65</span></div>
     </div>
-    <div class="nav-item" data-page="projects" data-title="📊 购房分析 · 楼盘">
-        <div class="icon">🏢</div><div>楼盘</div>
+    <div class="radar-wrap">
+      <div class="radar-title" style="color:var(--orange);">🥈 安居福汇阁</div>
+      <div class="radar-row"><span class="rr-l">价格优势</span><div class="rr-bar"><div class="rr-fill" style="width:65%;background:var(--orange);"></div></div><span class="rr-val">65</span></div>
+      <div class="radar-row"><span class="rr-l">通勤便利</span><div class="rr-bar"><div class="rr-fill" style="width:95%;background:var(--green);"></div></div><span class="rr-val">95</span></div>
+      <div class="radar-row"><span class="rr-l">现房即住</span><div class="rr-bar"><div class="rr-fill" style="width:100%;background:var(--green);"></div></div><span class="rr-val">100</span></div>
+      <div class="radar-row"><span class="rr-l">房源充足</span><div class="rr-bar"><div class="rr-fill" style="width:20%;background:var(--red);"></div></div><span class="rr-val">20</span></div>
+      <div class="radar-row"><span class="rr-l">地段价值</span><div class="rr-bar"><div class="rr-fill" style="width:75%;background:var(--green);"></div></div><span class="rr-val">75</span></div>
+      <div class="radar-row"><span class="rr-l">生活配套</span><div class="rr-bar"><div class="rr-fill" style="width:70%;background:var(--purple);"></div></div><span class="rr-val">70</span></div>
     </div>
-    <div class="nav-item" data-page="detail" data-title="📊 购房分析 · 详情">
-        <div class="icon">🔍</div><div>详情</div>
+  </div>
+
+  <!-- 翻身四杰 -->
+  <div class="sec-hdr"><h2>🏘️ 翻身四杰（邻里间家园附近）</h2></div>
+  <div class="g4" style="margin-bottom:22px;">
+    <div class="cmp-detail-card">
+      <div class="cmp-name" style="font-size:15px;">庆宜华苑</div>
+      <div class="cmp-addr">宝安新安 · 紧挨海岸悦府</div>
+      <div class="cmp-tags"><span class="tag tag-o">待配售</span><span class="tag tag-b">有104套两房</span></div>
+      <div class="cmp-stats">
+        <div class="cmp-stat"><div class="cmp-val">~5.00万</div><div class="cmp-lbl">预计均价</div></div>
+        <div class="cmp-stat"><div class="cmp-val">340万</div><div class="cmp-lbl">两房总价</div></div>
+        <div class="cmp-stat"><div class="cmp-val" style="color:var(--red);">51万</div><div class="cmp-lbl">首付15%</div></div>
+        <div class="cmp-stat"><div class="cmp-val" style="color:var(--red);">6,800+</div><div class="cmp-lbl">月供实付/月</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--sub);">⚠️ 单价高、总价高、首付远超预算</div>
     </div>
-    <div class="nav-item" data-page="policy" data-title="📋 购房分析 · 政策">
-        <div class="icon">📋</div><div>政策</div>
+    <div class="cmp-detail-card">
+      <div class="cmp-name" style="font-size:15px;">海乐华府</div>
+      <div class="cmp-addr">宝安新安 · 翻身路与海乐路</div>
+      <div class="cmp-tags"><span class="tag tag-b">现房</span><span class="tag tag-r">仅三房</span></div>
+      <div class="cmp-stats">
+        <div class="cmp-stat"><div class="cmp-val">4.92万</div><div class="cmp-lbl">均价</div></div>
+        <div class="cmp-stat"><div class="cmp-val">418万</div><div class="cmp-lbl">三房总价</div></div>
+        <div class="cmp-stat"><div class="cmp-val" style="color:var(--red);">63万</div><div class="cmp-lbl">首付15%</div></div>
+        <div class="cmp-stat"><div class="cmp-val">8,200+</div><div class="cmp-lbl">月供实付/月</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--sub);">❌ 仅三房起步，总价418万</div>
     </div>
-    <div class="nav-item" data-page="apply" data-title="🚀 购房分析 · 申购">
-        <div class="icon">🚀</div><div>申购</div>
+    <div class="cmp-detail-card">
+      <div class="cmp-name" style="font-size:15px;">海岸悦府</div>
+      <div class="cmp-addr">宝安新安 · 翻身路与新乐路</div>
+      <div class="cmp-tags"><span class="tag tag-b">现房</span><span class="tag tag-r">仅三房</span></div>
+      <div class="cmp-stats">
+        <div class="cmp-stat"><div class="cmp-val">5.05万</div><div class="cmp-lbl">均价（精装）</div></div>
+        <div class="cmp-stat"><div class="cmp-val">424万</div><div class="cmp-lbl">三房总价</div></div>
+        <div class="cmp-stat"><div class="cmp-val" style="color:var(--red);">64万</div><div class="cmp-lbl">首付15%</div></div>
+        <div class="cmp-stat"><div class="cmp-val">8,300+</div><div class="cmp-lbl">月供实付/月</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--sub);">❌ 翻身最贵，三房起步424万</div>
     </div>
-    <div class="nav-item" data-page="profile" data-title="👤 购房分析 · 档案">
-        <div class="icon">👤</div><div>档案</div>
+    <div class="cmp-detail-card">
+      <div class="cmp-name" style="font-size:15px;">天健和郡府</div>
+      <div class="cmp-addr">宝安新安 · 创业一路</div>
+      <div class="cmp-tags"><span class="tag tag-b">现房</span><span class="tag tag-o">仅有9套</span></div>
+      <div class="cmp-stats">
+        <div class="cmp-stat"><div class="cmp-val">4.69万</div><div class="cmp-lbl">均价（精装）</div></div>
+        <div class="cmp-stat"><div class="cmp-val">324万</div><div class="cmp-lbl">两房总价</div></div>
+        <div class="cmp-stat"><div class="cmp-val" style="color:var(--red);">49万</div><div class="cmp-lbl">首付15%</div></div>
+        <div class="cmp-stat"><div class="cmp-val">6,500+</div><div class="cmp-lbl">月供实付/月</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--sub);">⚠️ 翻身最便宜但仍超预算</div>
     </div>
-</div>
+  </div>
+
+</div><div class="footer">购房全流程管理系统 · 数据来源：深圳住建局官网 · 更新于 2026年7月</div>
+</main>
+
+<!-- ═══════════════ PAGE: 贷款测算 ═══════════════ -->
+<main class="page" id="pg-loan">
+<div class="container">
+  <div class="sec-hdr" style="margin-top:8px;"><h2>💰 贷款测算器</h2></div>
+  <div class="calc-grid" style="margin-bottom:22px;">
+    <div class="card"><div class="card-hdr"><h3>📝 参数输入</h3></div><div class="card-body">
+      <div class="calc-input"><label>房屋总价（万元）</label><input type="number" id="totalPrice" value="165.6" step="0.1"></div>
+      <div class="calc-input"><label>首付比例</label><select id="downPaymentRatio"><option value="15">15%</option><option value="20">20%</option><option value="30">30%</option></select></div>
+      <div class="calc-input"><label>公积金余额（万元）</label><input type="number" id="gjjBalance" value="9.4" step="0.1"></div>
+      <div class="calc-input"><label>公积金月缴（元）</label><input type="number" id="gjjMonthly" value="3300"></div>
+      <div class="calc-input"><label>公积金贷款利率</label><select id="gjjRate"><option value="2.6">2.60%（5年以上）</option><option value="2.85">2.85%</option></select></div>
+      <div class="calc-input"><label>商贷利率</label><select id="commercialRate"><option value="3.1">3.10%</option><option value="3.3">3.30%</option></select></div>
+      <div class="calc-input"><label>贷款年限</label><select id="loanYears"><option value="30">30年</option><option value="25">25年</option><option value="20">20年</option></select></div>
+    </div></div>
+    <div class="card"><div class="card-hdr"><h3>📊 测算结果</h3></div><div class="card-body">
+      <div class="calc-result" id="calcResult">
+        <div style="font-size:12px;color:var(--sub);margin-bottom:4px;">月供实付</div>
+        <div class="big-num" style="color:var(--green);" id="monthlyPay">2,326</div>
+        <div style="font-size:12px;color:var(--sub);">元/月</div>
+        <div class="sr" style="margin-top:14px;"><span class="sr-l">总房价</span><span class="sr-r" id="rTotal">165.6万</span></div>
+        <div class="sr"><span class="sr-l">首付总额</span><span class="sr-r" id="rDown">24.8万</span></div>
+        <div class="sr"><span class="sr-l">自掏首付</span><span class="sr-r" style="color:var(--green);" id="rSelfDown">15.4万</span></div>
+        <div class="sr"><span class="sr-l">贷款总额</span><span class="sr-r" id="rLoan">140.8万</span></div>
+        <div class="sr"><span class="sr-l">公积金贷款</span><span class="sr-r" style="color:var(--blue);">140.8万</span></div>
+        <div class="sr"><span class="sr-l">商贷部分</span><span class="sr-r" id="rCommercial">0万</span></div>
+        <div class="sr"><span class="sr-l">月供总额</span><span class="sr-r" id="rMonthlyTotal">5,626</span></div>
+        <div class="sr"><span class="sr-l">公积金冲抵</span><span class="sr-r" style="color:var(--green);">−3,300</span></div>
+        <div class="sr" style="font-weight:700;border-top:2px solid var(--border);margin-top:4px;padding-top:10px;">
+          <span>💵 每月实付</span><span style="font-size:18px;color:var(--green);" id="rActual">2,326</span>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</div><div class="footer">购房全流程管理系统</div>
+</main>
+
+<!-- ═══════════════ PAGE: 装修管理 ═══════════════ -->
+<main class="page" id="pg-reno">
+<div class="container"><div class="sec-hdr" style="margin-top:8px;"><h2>📐 装修预算与进度管理</h2></div>
+  <div class="g3" style="margin-bottom:16px;">
+    <div class="card"><div class="card-hdr"><h3>🎨 设计方案</h3></div><div class="card-body"><div style="color:var(--muted);text-align:center;padding:30px;">待购房后启动 · 在此对比装修风格和设计方案</div></div></div>
+    <div class="card"><div class="card-hdr"><h3>💰 预算明细</h3></div><div class="card-body"><div style="color:var(--muted);text-align:center;padding:30px;">待启动 · 硬装+软装+家电分项预算</div></div></div>
+    <div class="card"><div class="card-hdr"><h3>📅 施工排期</h3></div><div class="card-body"><div style="color:var(--muted);text-align:center;padding:30px;">待启动 · 装修公司报价对比· 施工进度跟踪</div></div></div>
+  </div>
+</div><div class="footer">购房全流程管理系统</div>
+</main>
+
+<!-- ═══════════════ PAGE: 家具清单 ═══════════════ -->
+<main class="page" id="pg-furniture">
+<div class="container"><div class="sec-hdr" style="margin-top:8px;"><h2>🛋️ 家具家电采购清单</h2></div>
+  <div class="card"><div class="card-body">
+    <table><thead><tr><th>空间</th><th>物品</th><th>预算</th><th>品牌候选</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td>客厅</td><td>沙发</td><td>3,000-5,000</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr><td>客厅</td><td>电视</td><td>3,000-6,000</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr><td>客厅</td><td>餐桌椅</td><td>1,500-3,000</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr><td>主卧</td><td>床+床垫</td><td>3,000-5,000</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr><td>主卧</td><td>衣柜</td><td>2,000-4,000</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr><td>厨房</td><td>冰箱</td><td>2,000-4,000</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr><td>厨房</td><td>洗衣机</td><td>1,500-3,000</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr><td>厨房</td><td>空调</td><td>2,000-4,000×2</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr><td>全屋</td><td>灯具</td><td>1,000-2,000</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr><td>全屋</td><td>窗帘</td><td>1,000-2,000</td><td>—</td><td>⏳ 待选</td></tr>
+      <tr style="font-weight:700;background:#f6fdf9;"><td colspan="2">💰 预算合计</td><td>20,000-38,000</td><td colspan="2" style="color:var(--green);">待细化</td></tr>
+    </tbody></table>
+  </div></div>
+</div><div class="footer">购房全流程管理系统</div>
+</main>
+
+<!-- ═══════════════ PAGE: 个人档案 ═══════════════ -->
+<main class="page" id="pg-profile">
+<div class="container">
+  <div class="sec-hdr" style="margin-top:8px;"><h2>👤 个人档案</h2></div>
+  <div class="g3" style="margin-bottom:22px;">
+    <div class="card"><div class="card-hdr"><h3>🧑 基本信息</h3></div><div class="card-body">
+      <div class="sr"><span class="sr-l">姓名</span><span class="sr-r">杰德瑞恩J</span></div>
+      <div class="sr"><span class="sr-l">月到手收入</span><span class="sr-r">¥13,500</span></div>
+      <div class="sr"><span class="sr-l">公积金余额</span><span class="sr-r">¥60,000</span></div>
+      <div class="sr"><span class="sr-l">公积金月缴</span><span class="sr-r">¥1,600</span></div>
+      <div class="sr"><span class="sr-l">工作地点</span><span class="sr-r">桥头站（11号线）</span></div>
+      <div class="sr"><span class="sr-l">深户</span><span class="sr-r" style="color:var(--green);">✅ 已确认</span></div>
+    </div></div>
+    <div class="card"><div class="card-hdr"><h3>👩 女友信息</h3></div><div class="card-body">
+      <div class="sr"><span class="sr-l">月到手收入</span><span class="sr-r">¥8,000</span></div>
+      <div class="sr"><span class="sr-l">公积金余额</span><span class="sr-r">¥34,000</span></div>
+      <div class="sr"><span class="sr-l">公积金月缴</span><span class="sr-r">¥1,700</span></div>
+      <div class="sr"><span class="sr-l">工作地点</span><span class="sr-r">固戍站（1号线，明年）</span></div>
+      <div class="sr"><span class="sr-l">当前地点</span><span class="sr-r">平峦山站（12号线）</span></div>
+      <div class="sr"><span class="sr-l">深户</span><span class="sr-r" style="color:var(--green);">✅ 已确认</span></div>
+    </div></div>
+    <div class="card"><div class="card-hdr"><h3>✅ 行动清单</h3></div><div class="card-body" style="font-size:13px;">
+      <div style="padding:6px 0;border-bottom:1px solid #f3f4f6;color:var(--green);">✅ 确认两人深户状态</div>
+      <div style="padding:6px 0;border-bottom:1px solid #f3f4f6;color:var(--green);">✅ 楼盘数据入库对比</div>
+      <div style="padding:6px 0;border-bottom:1px solid #f3f4f6;color:var(--green);">✅ 贷款能力测算完成</div>
+      <div style="padding:6px 0;border-bottom:1px solid #f3f4f6;">⬜ 准备学历证书、社保清单</div>
+      <div style="padding:6px 0;border-bottom:1px solid #f3f4f6;">⬜ <b>去深铁璟城售楼处看房</b></div>
+      <div style="padding:6px 0;border-bottom:1px solid #f3f4f6;">⬜ 关注福汇阁后续退房/常态化</div>
+      <div style="padding:6px 0;">⬜ 核实两人社保累计年限</div>
+    </div></div>
+  </div>
+</div><div class="footer">购房全流程管理系统</div>
+</main>
 
 <script>
 (function(){
-    var items = document.querySelectorAll('.nav-item');
-    var pages = document.querySelectorAll('.page');
-    var top = document.getElementById('topTitle');
+  var navLinks = document.querySelectorAll('[data-page]');
+  var pages = document.querySelectorAll('.page');
 
-    function switchPage(name, title) {
-        pages.forEach(function(p){ p.classList.remove('active'); });
-        document.getElementById('page-' + name).classList.add('active');
-        top.textContent = title;
-        window.scrollTo(0, 0);
+  function switchPage(name) {
+    pages.forEach(function(p){ p.classList.remove('active'); });
+    var target = document.getElementById('pg-' + name);
+    if (target) target.classList.add('active');
+    navLinks.forEach(function(a){
+      a.classList.remove('active');
+      if (a.dataset.page === name) a.classList.add('active');
+    });
+    window.scrollTo(0,0);
+  }
+
+  navLinks.forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      var page = this.dataset.page;
+      if (page) switchPage(page);
+    });
+  });
+
+  /* ── Comparison table data ── */
+  var projects = [
+    {rank:'🥇1',name:'深铁璟城',area:'松岗',price:'2.40',total:'165万',down:'24万',monthly:'2,326',commute:'5站12分钟',commute2:'~45分钟',delivery:'2026.12',units:'1200+',score:'85', tags:['star','cheap'],rowClass:'rec'},
+    {rank:'🥈2',name:'安居福汇阁',area:'福海',price:'3.04',total:'213万',down:'32万',monthly:'3,970',commute:'步行10分钟',commute2:'~30分钟',delivery:'2023.12✅',units:'28',score:'80', tags:['star','ready','suitable'],rowClass:'alt'},
+    {rank:'3',name:'新城华苑',area:'沙井',price:'3.00',total:'210万',down:'31万',monthly:'—',commute:'2站',commute2:'~35分钟',delivery:'2024.12',units:'1',score:'35', tags:[],rowClass:''},
+    {rank:'4',name:'和瑞府',area:'光明',price:'2.89',total:'200万',down:'30万',monthly:'—',commute:'换乘远',commute2:'换乘远',delivery:'2025.12',units:'~200',score:'30', tags:[],rowClass:''},
+    {rank:'5',name:'御棠上府',area:'光明',price:'2.74',total:'185万',down:'28万',monthly:'—',commute:'换乘远',commute2:'换乘远',delivery:'2025.09',units:'少量',score:'25', tags:[],rowClass:''},
+    {rank:'6',name:'颢龙苑',area:'龙岗',price:'2.31',total:'157万',down:'24万',monthly:'—',commute:'换乘远',commute2:'换乘远',delivery:'2023.12',units:'~400',score:'35', tags:['cheap'],rowClass:''},
+    {rank:'7',name:'海乐华府',area:'新安',price:'4.92',total:'仅三房',down:'—',monthly:'—',commute:'~35分钟',commute2:'~20分钟',delivery:'2021.12',units:'21',score:'45', tags:[],rowClass:'grey'},
+    {rank:'8',name:'和郡府',area:'新安',price:'4.69',total:'324万',down:'49万',monthly:'—',commute:'~35分钟',commute2:'~20分钟',delivery:'2025.12',units:'少量',score:'45', tags:[],rowClass:'grey'},
+    {rank:'9',name:'海岸悦府',area:'新安',price:'5.05',total:'仅三房',down:'—',monthly:'—',commute:'~35分钟',commute2:'~10分钟',delivery:'2023.12',units:'128',score:'30', tags:[],rowClass:'grey'},
+    {rank:'10',name:'华越龙苑',area:'龙华',price:'3.96',total:'仅四房',down:'—',monthly:'—',commute:'远',commute2:'~50分钟',delivery:'2025.12',units:'~530',score:'25', tags:[],rowClass:'grey'},
+    {rank:'11',name:'深铁熙府',area:'南山',price:'5.90',total:'350万+',down:'53万',monthly:'—',commute:'极远',commute2:'~50分钟',delivery:'2026.12',units:'有房',score:'15', tags:[],rowClass:'grey'},
+  ];
+
+  var activeFilter = 'all';
+  function renderTable() {
+    var tbody = document.getElementById('cmpTableBody');
+    if (!tbody) return;
+    var rows = projects.filter(function(p){
+      if (activeFilter === 'all') return true;
+      if (activeFilter === 'recommend') return p.tags.indexOf('star') >= 0;
+      if (activeFilter === 'ready') return p.tags.indexOf('ready') >= 0;
+      if (activeFilter === 'cheap') return p.tags.indexOf('cheap') >= 0;
+      if (activeFilter === 'suitable') return p.tags.indexOf('suitable') >= 0 || p.tags.indexOf('star') >= 0;
+      return true;
+    });
+    tbody.innerHTML = rows.map(function(p){
+      var cls = p.rowClass === 'grey' ? 'style="color:#999;"' : (p.rowClass === 'rec' ? 'style="background:#f6fdf9;"' : (p.rowClass === 'alt' ? 'style="background:#fffbf0;"' : ''));
+      return '<tr '+cls+'><td class="hl">'+p.rank+'</td><td class="hl">'+p.name+'</td><td>'+p.area+'</td><td style="font-weight:600;">'+p.price+'万</td><td class="hl">'+p.total+'</td><td>'+p.down+'</td><td>'+p.monthly+'</td><td>'+p.commute+'</td><td>'+p.commute2+'</td><td>'+p.delivery+'</td><td>'+p.units+'</td><td style="font-weight:700;">'+p.score+'</td></tr>';
+    }).join('');
+  }
+
+  /* Filter chips */
+  document.querySelectorAll('.filter-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.filter-chip').forEach(function(c){ c.classList.remove('active'); });
+      this.classList.add('active');
+      activeFilter = this.dataset.filter;
+      renderTable();
+    });
+  });
+
+  /* Loan calculator */
+  function calcLoan() {
+    var total = parseFloat(document.getElementById('totalPrice').value) * 10000;
+    var ratio = parseFloat(document.getElementById('downPaymentRatio').value) / 100;
+    var gjjBal = parseFloat(document.getElementById('gjjBalance').value) * 10000;
+    var gjjMon = parseFloat(document.getElementById('gjjMonthly').value);
+    var gjjRate = parseFloat(document.getElementById('gjjRate').value) / 100;
+    var comRate = parseFloat(document.getElementById('commercialRate').value) / 100;
+    var years = parseInt(document.getElementById('loanYears').value);
+    var gjjLimit = 1760000;
+
+    if (isNaN(total) || total <= 0) return;
+    var down = total * ratio;
+    var selfDown = Math.max(0, down - gjjBal);
+    var loan = total - down;
+    var gjjLoan = Math.min(loan, gjjLimit);
+    var comLoan = Math.max(0, loan - gjjLoan);
+
+    var months = years * 12;
+    var mrG = gjjRate / 12;
+    var mrC = comRate / 12;
+
+    function pmt(principal, rate, n) {
+      if (rate === 0) return principal / n;
+      return principal * rate * Math.pow(1+rate, n) / (Math.pow(1+rate, n) - 1);
     }
 
-    items.forEach(function(item){
-        item.addEventListener('click', function(){
-            items.forEach(function(i){ i.classList.remove('active'); });
-            this.classList.add('active');
-            switchPage(this.dataset.page, this.dataset.title);
-        });
-    });
+    var gjjMonthly = gjjLoan > 0 ? pmt(gjjLoan, mrG, months) : 0;
+    var comMonthly = comLoan > 0 ? pmt(comLoan, mrC, months) : 0;
+    var totalMonthly = gjjMonthly + comMonthly;
+    var actualMonthly = Math.max(0, totalMonthly - gjjMon);
+
+    document.getElementById('monthlyPay').textContent = Math.round(actualMonthly).toLocaleString();
+    document.getElementById('rTotal').textContent = (total/10000).toFixed(1) + '万';
+    document.getElementById('rDown').textContent = (down/10000).toFixed(1) + '万';
+    document.getElementById('rSelfDown').textContent = (selfDown/10000).toFixed(1) + '万';
+    document.getElementById('rLoan').textContent = (loan/10000).toFixed(1) + '万';
+    document.getElementById('rCommercial').textContent = (comLoan/10000).toFixed(1) + '万';
+    document.getElementById('rMonthlyTotal').textContent = Math.round(totalMonthly).toLocaleString();
+    document.getElementById('rActual').textContent = Math.round(actualMonthly).toLocaleString();
+  }
+
+  var calcInputs = document.querySelectorAll('#totalPrice, #downPaymentRatio, #gjjBalance, #gjjMonthly, #gjjRate, #commercialRate, #loanYears');
+  calcInputs.forEach(function(input){
+    input.addEventListener('input', calcLoan);
+    input.addEventListener('change', calcLoan);
+  });
+
+  /* Init */
+  renderTable();
+  calcLoan();
 })();
 </script>
 
