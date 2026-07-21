@@ -188,8 +188,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
         <div><span class="lbl">两房总价</span><span class="val">165 万</span></div>
         <div><span class="lbl">距地铁</span><span class="val">200m·3分</span></div>
         <div><span class="lbl">房源</span><span class="val">1200+</span></div>
-        <div><span class="lbl">实际月供</span><span class="val val-g">3,313</span></div>
-        <div><span class="lbl">月供压力</span><span class="val val-g">15.4%</span></div>
+        <div><span class="lbl">实际月供</span><span class="val val-g">2,602</span></div>
+        <div><span class="lbl">月供压力</span><span class="val val-g">12.1%</span></div>
       </div>
     </div>
     <div class="qc qc-2">
@@ -207,8 +207,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
         <div><span class="lbl">两房总价</span><span class="val">213 万</span></div>
         <div><span class="lbl">距地铁</span><span class="val">900m·11分</span></div>
         <div><span class="lbl">房源</span><span class="val">仅 28</span></div>
-        <div><span class="lbl">实际月供</span><span class="val">5,241</span></div>
-        <div><span class="lbl">月供压力</span><span class="val val-a">24.4%</span></div>
+        <div><span class="lbl">实际月供</span><span class="val">4,526</span></div>
+        <div><span class="lbl">月供压力</span><span class="val val-a">21.1%</span></div>
       </div>
     </div>
     <div class="qc qc-3">
@@ -226,8 +226,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
         <div><span class="lbl">两房总价</span><span class="val">350 万</span></div>
         <div><span class="lbl">距地铁</span><span class="val val-g">300m·5分</span></div>
         <div><span class="lbl">房源</span><span class="val">约 104</span></div>
-        <div><span class="lbl">实际月供</span><span class="val val-r">10,734</span></div>
-        <div><span class="lbl">月供压力</span><span class="val val-r">49.9%</span></div>
+        <div><span class="lbl">实际月供</span><span class="val val-r">10,019</span></div>
+        <div><span class="lbl">月供压力</span><span class="val val-r">46.6%</span></div>
       </div>
     </div>
   </div>
@@ -239,63 +239,206 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <h2>💰 月供深度拆解（原月供 vs 公积金抵扣 vs 实际月供）</h2>
     <span class="badge badge-blue">核心 · 必看</span>
   </div>
-  <div style="background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--sub);line-height:1.7">
-    <strong style="color:var(--ink)">计算公式：</strong><br>
-    ① 贷款额 = 总价 × 85%（首付 15%）&nbsp;&nbsp;② 月利率 = (LPR 4.20% - 30BP) / 12 = 0.325%<br>
-    ③ 月供 = 贷款额 × 月利率 × (1+月利率)^360 / [(1+月利率)^360 - 1]&nbsp;&nbsp;等额本息 30 年<br>
-    ④ <strong style="color:var(--blue)">实际月供 = 月供 − 公积金月缴存额 3,300 元</strong>（公积金可全额抵扣贷款本息）
+  <div style="background:linear-gradient(90deg,#dbeafe 0%,#e0f2fe 100%);border:1px solid #93c5fd;border-left:4px solid var(--blue);padding:14px 16px;border-radius:10px;margin-bottom:14px;font-size:12px;color:#0c4a6e;line-height:1.7">
+    <strong style="color:#0c4a6e">💡 重要修正：采用「组合贷款」计算</strong>（公积金 + 商贷）<br>
+    • 深圳公积金贷款利率 <b>2.60%</b>（2026-07-01 起执行，史上最低）· 商业贷款利率 <b>3.90%</b>（LPR 4.20% - 30BP）<br>
+    • 公积金可贷 100 万（夫妻共同），不足部分走商贷<br>
+    • 公积金月缴存 ¥3,300 直接冲抵月供 = 实际从工资扣的钱更少
   </div>
   <div class="mortgage-grid">
     <div class="mg mg-1">
       <h3>🚇 深铁璟城</h3>
       <div class="mg-row"><span class="lbl">两房总价</span><span class="val">¥1,650,000</span></div>
       <div class="mg-row"><span class="lbl">首付 15%</span><span class="val">¥247,500</span></div>
-      <div class="mg-row"><span class="lbl">贷款额</span><span class="val">¥1,402,500</span></div>
-      <div class="mg-row"><span class="lbl">原月供（30年）</span><span class="val">¥6,613</span></div>
+      <div class="mg-row"><span class="lbl">贷款总额（85%）</span><span class="val">¥1,402,500</span></div>
+      <div class="mg-row" style="font-size:12px;background:#f0f9ff;padding:6px 8px;border-radius:4px;margin:4px -4px"><span class="lbl">　├ 公积金 2.60%</span><span class="val" style="color:var(--blue)">¥1,000,000</span></div>
+      <div class="mg-row" style="font-size:12px;background:#fff7ed;padding:6px 8px;border-radius:4px;margin:4px -4px"><span class="lbl">　└ 商贷 3.90%</span><span class="val" style="color:var(--orange)">¥402,500</span></div>
+      <div class="mg-row"><span class="lbl">组合月供（30年）</span><span class="val">¥5,902</span></div>
       <div class="mg-row"><span class="lbl">− 公积金月缴存</span><span class="val" style="color:var(--blue)">−¥3,300</span></div>
-      <div class="mg-row total"><span class="lbl">实际月供</span><span class="val">¥3,313</span></div>
-      <div class="mg-row cash-flow"><span class="lbl">月现金流</span><span class="val">+¥18,187</span></div>
+      <div class="mg-row total"><span class="lbl">实际月供</span><span class="val">¥2,602 ⭐</span></div>
+      <div class="mg-row cash-flow"><span class="lbl">月现金流</span><span class="val">+¥18,898</span></div>
       <div class="mg-formula">
-        <strong>30 年总利息：</strong>¥978,180<br>
-        <strong>占月收入比：</strong>15.4%（健康区间）<br>
-        <strong>30 年总还款：</strong>¥2,380,680
+        <strong>30 年总利息：</strong>¥722,520<br>
+        <strong>占月收入比：</strong>12.1%（非常健康 ✅）<br>
+        <strong>30 年总还款：</strong>¥2,125,020
       </div>
     </div>
     <div class="mg mg-2">
       <h3>🏠 安居福汇阁</h3>
       <div class="mg-row"><span class="lbl">两房总价</span><span class="val">¥2,130,000</span></div>
       <div class="mg-row"><span class="lbl">首付 15%</span><span class="val">¥319,500</span></div>
-      <div class="mg-row"><span class="lbl">贷款额</span><span class="val">¥1,810,500</span></div>
-      <div class="mg-row"><span class="lbl">原月供（30年）</span><span class="val">¥8,541</span></div>
+      <div class="mg-row"><span class="lbl">贷款总额（85%）</span><span class="val">¥1,810,500</span></div>
+      <div class="mg-row" style="font-size:12px;background:#f0f9ff;padding:6px 8px;border-radius:4px;margin:4px -4px"><span class="lbl">　├ 公积金 2.60%</span><span class="val" style="color:var(--blue)">¥1,000,000</span></div>
+      <div class="mg-row" style="font-size:12px;background:#fff7ed;padding:6px 8px;border-radius:4px;margin:4px -4px"><span class="lbl">　└ 商贷 3.90%</span><span class="val" style="color:var(--orange)">¥810,500</span></div>
+      <div class="mg-row"><span class="lbl">组合月供（30年）</span><span class="val">¥7,826</span></div>
       <div class="mg-row"><span class="lbl">− 公积金月缴存</span><span class="val" style="color:var(--blue)">−¥3,300</span></div>
-      <div class="mg-row total"><span class="lbl">实际月供</span><span class="val">¥5,241</span></div>
-      <div class="mg-row cash-flow"><span class="lbl">月现金流</span><span class="val">+¥16,259</span></div>
+      <div class="mg-row total"><span class="lbl">实际月供</span><span class="val">¥4,526</span></div>
+      <div class="mg-row cash-flow"><span class="lbl">月现金流</span><span class="val">+¥16,974</span></div>
       <div class="mg-formula">
-        <strong>30 年总利息：</strong>¥1,262,160<br>
-        <strong>占月收入比：</strong>24.4%（中等压力）<br>
-        <strong>30 年总还款：</strong>¥3,072,660
+        <strong>30 年总利息：</strong>¥1,006,860<br>
+        <strong>占月收入比：</strong>21.1%（可控 ⚠️）<br>
+        <strong>30 年总还款：</strong>¥2,817,360
       </div>
     </div>
     <div class="mg mg-3">
       <h3>🏙️ 庆宜华苑棚改二期</h3>
       <div class="mg-row"><span class="lbl">两房总价</span><span class="val">¥3,500,000</span></div>
       <div class="mg-row"><span class="lbl">首付 15%</span><span class="val">¥525,000</span></div>
-      <div class="mg-row"><span class="lbl">贷款额</span><span class="val">¥2,975,000</span></div>
-      <div class="mg-row"><span class="lbl">原月供（30年）</span><span class="val">¥14,034</span></div>
+      <div class="mg-row"><span class="lbl">贷款总额（85%）</span><span class="val">¥2,975,000</span></div>
+      <div class="mg-row" style="font-size:12px;background:#f0f9ff;padding:6px 8px;border-radius:4px;margin:4px -4px"><span class="lbl">　├ 公积金 2.60%</span><span class="val" style="color:var(--blue)">¥1,000,000</span></div>
+      <div class="mg-row" style="font-size:12px;background:#fff7ed;padding:6px 8px;border-radius:4px;margin:4px -4px"><span class="lbl">　└ 商贷 3.90%</span><span class="val" style="color:var(--orange)">¥1,975,000</span></div>
+      <div class="mg-row"><span class="lbl">组合月供（30年）</span><span class="val">¥13,319</span></div>
       <div class="mg-row"><span class="lbl">− 公积金月缴存</span><span class="val" style="color:var(--blue)">−¥3,300</span></div>
-      <div class="mg-row total"><span class="lbl">实际月供</span><span class="val">¥10,734</span></div>
+      <div class="mg-row total" style="background:linear-gradient(90deg,#fef2f2 0%,#fee2e2 100%);border-color:#fecaca"><span class="lbl" style="color:var(--red)">实际月供</span><span class="val" style="color:var(--red)">¥10,019</span></div>
       <div class="mg-row cash-flow" style="background:linear-gradient(90deg,#fee2e2 0%,#fecaca 100%);border-color:#f87171">
         <span class="lbl" style="color:var(--red)">月现金流</span>
-        <span class="val" style="color:var(--red)">+¥10,766</span>
+        <span class="val" style="color:var(--red)">+¥11,481</span>
       </div>
       <div class="mg-formula">
-        <strong>30 年总利息：</strong>¥2,076,240<br>
-        <strong>占月收入比：</strong>49.9%（⚠️ 高压）<br>
-        <strong>30 年总还款：</strong>¥5,051,240
+        <strong>30 年总利息：</strong>¥1,819,860<br>
+        <strong>占月收入比：</strong>46.6%（⚠️ 警戒线）<br>
+        <strong>30 年总还款：</strong>¥4,794,860
       </div>
     </div>
   </div>
-  <div class="tip">💡 <strong>月现金流 = 月收入 21,500 − 实际月供</strong>。深铁璟城现金流最健康；庆宜华苑虽月收入结余 10,766，但实际月供占总收入 49.9% 已触达警戒线。</div>
+  <div class="tip">💡 <strong>月现金流 = 月收入 21,500 − 实际月供</strong>。深铁璟城现金流最健康；庆宜华苑月现金流 11,481 虽不算低，但月供压力 46.6% 已触达警戒线。</div>
+</div>
+
+<!-- 2.5 详细计算公式 -->
+<div class="card">
+  <div class="sec-hdr">
+    <h2>🧮 贷款计算详细公式（自己也能手算）</h2>
+    <span class="badge badge-blue">推导 · 一目了然</span>
+  </div>
+
+  <div style="background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:14px;font-size:12px">
+    <div style="font-weight:700;color:var(--ink);margin-bottom:8px;font-size:13px">📌 本次计算用到的基础参数（2026-07-21）</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;line-height:1.7">
+      <div><span style="color:var(--sub)">公积金利率（首套 5年+）：</span><b style="color:var(--blue)">2.60% / 年</b><span style="font-size:10px;color:var(--sub)">（史上最低）</span></div>
+      <div><span style="color:var(--sub)">公积金利率（二套 5年+）：</span><b>3.075% / 年</b></div>
+      <div><span style="color:var(--sub)">商业贷款利率：</span><b style="color:var(--orange)">3.90% / 年</b><span style="font-size:10px;color:var(--sub)">（LPR 4.20% - 30BP）</span></div>
+      <div><span style="color:var(--sub)">贷款期限：</span><b>30 年 = 360 期</b></div>
+      <div><span style="color:var(--sub)">首付比例：</span><b>15%</b><span style="font-size:10px;color:var(--sub)">（人才房/棚改房特殊）</span></div>
+      <div><span style="color:var(--sub)">公积金贷款额度：</span><b>个人 60万 / 夫妻 100万</b></div>
+      <div><span style="color:var(--sub)">公积金月缴存：</span><b style="color:var(--blue)">¥3,300 / 月</b><span style="font-size:10px;color:var(--sub)">（冲抵月供）</span></div>
+      <div><span style="color:var(--sub)">还款方式：</span><b>等额本息（每月固定）</b></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+    <!-- 公式1：等额本息 -->
+    <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:14px 18px">
+      <div style="font-weight:700;color:var(--blue);margin-bottom:8px;font-size:14px">① 等额本息月供公式 <span style="font-size:11px;background:#dbeafe;padding:2px 6px;border-radius:3px;margin-left:6px">最常用</span></div>
+      <div style="background:#fff;padding:12px;border-radius:6px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:14px;text-align:center;margin:8px 0;border:1px solid #e0f2fe">
+        M = P × r × (1+r)<sup>n</sup> ÷ [(1+r)<sup>n</sup> − 1]
+      </div>
+      <div style="font-size:12px;color:var(--sub);line-height:1.8;background:#fff;padding:8px 10px;border-radius:4px">
+        <div>· <b>M</b> = 每月月供（元）</div>
+        <div>· <b>P</b> = 贷款本金（元）</div>
+        <div>· <b>r</b> = 月利率 = 年利率 ÷ 12</div>
+        <div>· <b>n</b> = 还款月数 = 360（30年）</div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#0c4a6e;background:#dbeafe;padding:6px 10px;border-radius:4px">
+        💡 每月还款额 <b>固定不变</b>。前期还利息多、本金少；后期反过来
+      </div>
+    </div>
+
+    <!-- 公式2：等额本金 -->
+    <div style="background:#faf5ff;border:1px solid #ddd6fe;border-radius:10px;padding:14px 18px">
+      <div style="font-weight:700;color:var(--purple);margin-bottom:8px;font-size:14px">② 等额本金月供公式 <span style="font-size:11px;background:#ede9fe;padding:2px 6px;border-radius:3px;margin-left:6px">省利息</span></div>
+      <div style="background:#fff;padding:12px;border-radius:6px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:13px;text-align:center;margin:8px 0;border:1px solid #ede9fe">
+        M<sub>k</sub> = P ÷ n + [P − P×(k−1)÷n] × r
+      </div>
+      <div style="font-size:12px;color:var(--sub);line-height:1.8;background:#fff;padding:8px 10px;border-radius:4px">
+        <div>· <b>M<sub>k</sub></b> = 第 k 个月月供</div>
+        <div>· <b>P ÷ n</b> = 每月固定本金</div>
+        <div>· <b>[P − P×(k−1)÷n] × r</b> = 当月剩余本金利息</div>
+        <div>· 第一个月 k=1，最后一个月 k=360</div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#581c87;background:#ede9fe;padding:6px 10px;border-radius:4px">
+        💡 每月本金 <b>固定</b>，利息 <b>越来越少</b>。30 年总利息比等额本息少 ¥14-30 万
+      </div>
+    </div>
+
+    <!-- 公式3：总利息 -->
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 18px">
+      <div style="font-weight:700;color:var(--green);margin-bottom:8px;font-size:14px">③ 30 年总利息</div>
+      <div style="background:#fff;padding:12px;border-radius:6px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:14px;text-align:center;margin:8px 0;border:1px solid #dcfce7">
+        I = M × n − P
+      </div>
+      <div style="font-size:12px;color:var(--sub);line-height:1.8;background:#fff;padding:8px 10px;border-radius:4px">
+        <div>· <b>I</b> = 30 年累计支付利息</div>
+        <div>· <b>M × n</b> = 30 年总还款额</div>
+        <div>· 减去本金 P 后就是"利息成本"</div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#14532d;background:#dcfce7;padding:6px 10px;border-radius:4px">
+        💡 30 年房贷的利息 ≈ 本金的 <b>50-70%</b>（这就是房贷"贵"的原因）
+      </div>
+    </div>
+
+    <!-- 公式4：实际月供 -->
+    <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:10px;padding:14px 18px">
+      <div style="font-weight:700;color:var(--amber);margin-bottom:8px;font-size:14px">④ 实际月供（你的真实支出）</div>
+      <div style="background:#fff;padding:12px;border-radius:6px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:14px;text-align:center;margin:8px 0;border:1px solid #fef3c7">
+        M<sub>实</sub> = M<sub>组合</sub> − 公积金月缴存
+      </div>
+      <div style="font-size:12px;color:var(--sub);line-height:1.8;background:#fff;padding:8px 10px;border-radius:4px">
+        <div>· <b>M<sub>组合</sub></b> = 公积金月供 + 商贷月供</div>
+        <div>· 公积金账户余额 = 公司+个人每月共缴 ¥3,300</div>
+        <div>· 直接冲抵当月月供，从工资扣的少了</div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#78350f;background:#fef3c7;padding:6px 10px;border-radius:4px">
+        💡 <b>贷款 100 万 2.60% 30年</b>，每月比商贷少还 <b>¥260</b>，30 年省 <b>¥9.4 万</b>
+      </div>
+    </div>
+  </div>
+
+  <!-- 实际计算示例 -->
+  <div style="background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;padding:20px 24px;border-radius:12px;margin-top:6px">
+    <div style="font-weight:700;font-size:15px;margin-bottom:14px;color:#fde68a;display:flex;align-items:center;gap:8px">
+      <span>📐</span> 完整计算示例：深铁璟城 165万两房（手把手推导）
+    </div>
+
+    <div style="font-family:'SF Mono',Menlo,Consolas,monospace;font-size:13px;line-height:2">
+      <div style="color:#94a3b8">// Step 1 · 贷款额度拆分（公积金 100万上限）</div>
+      <div>贷款总额 = 165万 × 85% = <b style="color:#86efac">1,402,500 元</b></div>
+      <div>公积金部分 = min(100万, 140.25万) = <b style="color:#86efac">1,000,000 元</b>　@ 2.60%</div>
+      <div>商贷部分 = 140.25万 − 100万 = <b style="color:#86efac">402,500 元</b>　@ 3.90%</div>
+
+      <div style="color:#94a3b8;margin-top:12px">// Step 2 · 公积金月供</div>
+      <div>月利率 r₁ = 2.60% ÷ 12 = 0.2167%</div>
+      <div>M<sub>公积金</sub> = 100万 × 0.002167 × (1.002167)<sup>360</sup> ÷ [(1.002167)<sup>360</sup> − 1]</div>
+      <div>　　　　　 = 100万 × 0.002167 × 2.1692 ÷ 1.1692</div>
+      <div>　　　　　 = <b style="color:#86efac">4,008 元 / 月</b></div>
+
+      <div style="color:#94a3b8;margin-top:12px">// Step 3 · 商贷月供</div>
+      <div>月利率 r₂ = 3.90% ÷ 12 = 0.325%</div>
+      <div>M<sub>商贷</sub> = 40.25万 × 0.00325 × (1.00325)<sup>360</sup> ÷ [(1.00325)<sup>360</sup> − 1]</div>
+      <div>　　　　 = 40.25万 × 0.00325 × 3.2096 ÷ 2.2096</div>
+      <div>　　　　 = <b style="color:#86efac">1,898 元 / 月</b></div>
+
+      <div style="color:#94a3b8;margin-top:12px">// Step 4 · 组合月供（实际从银行卡扣）</div>
+      <div>M<sub>组合</sub> = 4,008 + 1,898 = <b style="color:#fbbf24">5,906 元 / 月</b></div>
+
+      <div style="color:#94a3b8;margin-top:12px">// Step 5 · 实际月供（扣公积金账户转入）</div>
+      <div>M<sub>实际</sub> = 5,906 − 3,300 = <b style="color:#fde68a;font-size:16px">2,606 元 / 月 ⭐</b></div>
+      <div style="color:#cbd5e1;font-size:11px;font-family:inherit">　　（即每月从工资扣 ¥2,606，其余 ¥3,300 由公积金账户补足）</div>
+
+      <div style="color:#94a3b8;margin-top:12px">// Step 6 · 30 年总利息</div>
+      <div>公积金总利息 = 4,008 × 360 − 100万 = <b style="color:#86efac">442,880 元</b></div>
+      <div>商贷总利息 = 1,898 × 360 − 40.25万 = <b style="color:#86efac">282,980 元</b></div>
+      <div>总利息合计 = <b style="color:#fbbf24">725,860 元 ≈ ¥72.6 万</b></div>
+
+      <div style="color:#94a3b8;margin-top:12px">// Step 7 · 对比：全部商贷 3.90% 的利息</div>
+      <div>全商贷月供 = 1,402,500 × 0.00325 × 3.2096 ÷ 2.2096 = <b style="color:#fbbf24">6,615 元 / 月</b></div>
+      <div>全商贷利息 = 6,615 × 360 − 140.25万 = <b style="color:#fbbf24">978,180 元 ≈ ¥97.8 万</b></div>
+      <div style="color:#86efac">✅ 组合贷款比全商贷省 ¥25.2 万利息</div>
+    </div>
+
+    <div style="margin-top:14px;padding:10px 14px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);border-radius:8px;font-size:12px;color:#fde68a">
+      💡 <b>关键洞察：</b>即使组合贷款只用到 100 万公积金，30 年也能省下 ¥25 万+——这就是"必须用公积金"的全部理由
+    </div>
+  </div>
 </div>
 
 <!-- 3. 申购方式对比 -->
@@ -523,9 +666,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <tr><td>📅 交付时间</td><td>2026.12（期房）</td><td>2023.12（现房 ✅）</td><td>2026 年内（期房）</td></tr>
       <tr><td>📦 房源</td><td>1200+ 充足</td><td>28 套紧张</td><td>104 套</td></tr>
       <tr><td>📝 申购方式</td><td>摇号轮候</td><td>现房已售</td><td>棚改余房，无需轮候</td></tr>
-      <tr class="hl"><td>💳 原月供（30年）</td><td class="hl-g">¥6,613</td><td>¥8,541</td><td class="hl-r">¥14,034</td></tr>
-      <tr class="hl-g"><td>💰 实际月供</td><td class="hl-g"><strong>¥3,313</strong></td><td>¥5,241</td><td class="hl-r"><strong>¥10,734</strong></td></tr>
-      <tr><td>📊 月供压力比</td><td class="hl-g">15.4%</td><td>24.4%</td><td class="hl-r">49.9%（警戒线）</td></tr>
+      <tr class="hl"><td>💳 组合月供（30年）</td><td class="hl-g">¥5,902</td><td>¥7,826</td><td class="hl-r">¥13,319</td></tr>
+      <tr class="hl-g"><td>💰 实际月供（扣公积金）</td><td class="hl-g"><strong>¥2,602</strong></td><td>¥4,526</td><td class="hl-r"><strong>¥10,019</strong></td></tr>
+      <tr><td>📊 月供压力比</td><td class="hl-g">12.1%</td><td>21.1%</td><td class="hl-r">46.6%（警戒线）</td></tr>
       <tr><td>🏪 周边商场</td><td>松岗天虹 2km</td><td>福海家博汇 1km</td><td class="hl-g"><strong>海雅缤纷城 800m</strong></td></tr>
       <tr><td>🏥 三甲医院</td><td class="hl-r">15km 远</td><td class="hl-r">12km 远</td><td class="hl-g">1.5km 近</td></tr>
       <tr><td>📚 优质教育</td><td>松岗实验</td><td>福永中学</td><td class="hl-g"><strong>宝安中学</strong></td></tr>
@@ -546,7 +689,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <div class="verdict-label">首选 · 推荐申购</div>
       <h3>🥇 深铁璟城</h3>
       <div class="score">85</div>
-      <div class="score-label">综合评分 · 30 年实际月供仅 ¥3,313</div>
+      <div class="score-label">综合评分 · 30 年实际月供仅 ¥2,602</div>
       <div class="reason">
         <strong>首付 24.75 万在预算内 ✅</strong>，月供仅占收入 15.4%（健康）。区位虽远郊，但 11 号线直达桥头公司仅 5 站 12 分钟。<br><br>
         唯一不确定：<strong>摇号中签概率</strong>。建议<strong>持续关注第二批次公告</strong>，做多手准备。
@@ -558,7 +701,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <div class="score">80</div>
       <div class="score-label">综合评分 · 现房即买即住</div>
       <div class="reason">
-        首付 32 万<strong>超出预算 7 万</strong>，但月供压力 24.4% 仍可控。<strong>通勤最优</strong>：步行 10 分钟到桥头站。<br><br>
+        首付 32 万<strong>超出预算 7 万</strong>，但月供压力 21.1% 仍可控。<strong>通勤最优</strong>：步行 10 分钟到桥头站。<br><br>
         关键问题：<strong>剩余 28 套很难抢到</strong>。如有尾房放出，建议<strong>第一时间申请</strong>。
       </div>
     </div>
