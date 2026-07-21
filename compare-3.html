@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3 盘深度对比 · 深铁璟城 vs 安居福汇阁 vs 庆宜华苑棚改二期</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#0f172a;--sub:#64748b;--line:#e2e8f0;--green:#16a34a;--blue:#2563eb;--orange:#ea580c;--red:#dc2626;--amber:#d97706;--purple:#7c3aed;--shadow:0 1px 3px rgba(0,0,0,.06);--shadow-lg:0 8px 24px rgba(0,0,0,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1340px;margin:0 auto;padding:24px}
+.hero{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;border-radius:18px;padding:36px 44px;margin-bottom:24px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(59,130,246,.3) 0%,transparent 70%);border-radius:50%}
+.hero h1{font-size:30px;font-weight:800;margin-bottom:8px;position:relative}
+.hero .sub{font-size:15px;color:#cbd5e1;margin-bottom:18px;position:relative}
+.hero .meta{display:flex;gap:18px;font-size:13px;color:#94a3b8;flex-wrap:wrap;position:relative}
+.hero .meta span::before{content:"·";margin-right:8px;color:#475569}
+.hero .meta span:first-child::before{content:"";margin:0}
+.hero-tag{display:inline-block;background:rgba(59,130,246,.18);color:#93c5fd;font-size:12px;padding:3px 10px;border-radius:6px;margin-right:6px;font-weight:600}
+.card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:22px;margin-bottom:18px;border:1px solid var(--line)}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-hdr h2{font-size:19px;font-weight:700;color:var(--ink)}
+.sec-hdr .badge{background:#f1f5f9;color:var(--sub);font-size:12px;padding:4px 10px;border-radius:6px;font-weight:600}
+.sec-hdr .badge-red{background:#fee2e2;color:var(--red)}
+.sec-hdr .badge-green{background:#dcfce7;color:var(--green)}
+.sec-hdr .badge-blue{background:#dbeafe;color:var(--blue)}
+.sec-hdr .badge-amber{background:#fef3c7;color:var(--amber)}
+.sec-hdr .badge-purple{background:#ede9fe;color:var(--purple)}
+.quick-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.qc{border-radius:14px;padding:18px;border:2px solid;background:var(--card);position:relative;overflow:hidden;transition:transform .2s}
+.qc:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.qc-1{border-color:#16a34a;background:linear-gradient(135deg,#f0fdf4 0%,#fff 60%)}
+.qc-2{border-color:#ea580c;background:linear-gradient(135deg,#fff7ed 0%,#fff 60%)}
+.qc-3{border-color:#7c3aed;background:linear-gradient(135deg,#faf5ff 0%,#fff 60%)}
+.qc-rank{position:absolute;top:0;right:0;background:rgba(0,0,0,.7);color:#fff;font-size:11px;padding:5px 12px;border-bottom-left-radius:10px;font-weight:700}
+.qc-icon{font-size:30px;margin-bottom:8px}
+.qc-name{font-size:17px;font-weight:800;margin-bottom:4px;color:var(--ink)}
+.qc-where{font-size:12px;color:var(--sub);margin-bottom:10px}
+.qc-tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:600}
+.qc-tag-r{background:#fee2e2;color:var(--red)}
+.qc-tag-y{background:#fef3c7;color:var(--amber)}
+.qc-tag-g{background:#dcfce7;color:var(--green)}
+.qc-tag-b{background:#dbeafe;color:var(--blue)}
+.qc-data{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;margin-top:10px;font-size:12px}
+.qc-data div{display:flex;justify-content:space-between}
+.qc-data .lbl{color:var(--sub)}
+.qc-data .val{font-weight:700;color:var(--ink)}
+.qc-data .val-g{color:var(--green)}
+.qc-data .val-r{color:var(--red)}
+.mortgage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mg{border:1px solid var(--line);border-radius:12px;padding:18px;background:#fafbfc}
+.mg h3{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.mg-1 h3{color:var(--green)}
+.mg-2 h3{color:var(--orange)}
+.mg-3 h3{color:var(--purple)}
+.mg-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.mg-row:last-child{border-bottom:none}
+.mg-row .lbl{color:var(--sub)}
+.mg-row .val{font-weight:700;font-family:"SF Mono",Menlo,Consolas,monospace}
+.mg-row.total{background:linear-gradient(90deg,#f0f9ff 0%,#e0f2fe 100%);padding:10px 12px;border-radius:8px;margin-top:8px;border-bottom:none;border:1px solid #bae6fd}
+.mg-row.total .lbl{color:var(--blue);font-weight:700;font-size:13px}
+.mg-row.total .val{color:var(--blue);font-size:16px}
+.mg-row.cash-flow{background:linear-gradient(90deg,#fef3c7 0%,#fde68a 100%);padding:10px 12px;border-radius:8px;margin-top:8px;border-bottom:none;border:1px solid #fcd34d}
+.mg-row.cash-flow .lbl{color:var(--amber);font-weight:700;font-size:13px}
+.mg-row.cash-flow .val{color:var(--amber);font-size:16px}
+.mg-formula{background:#f8fafc;border-radius:8px;padding:10px;margin-top:10px;font-size:11px;color:var(--sub);line-height:1.5;border:1px solid var(--line)}
+.apply-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ap{border-radius:12px;padding:18px;border:1px solid var(--line);background:var(--card)}
+.ap-1{border-top:4px solid var(--green)}
+.ap-2{border-top:4px solid var(--orange)}
+.ap-3{border-top:4px solid var(--purple)}
+.ap h3{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ap .ap-type{display:inline-block;font-size:11px;padding:3px 8px;border-radius:4px;font-weight:700;margin-bottom:10px}
+.ap-1 .ap-type{background:#dcfce7;color:var(--green)}
+.ap-2 .ap-type{background:#ffedd5;color:var(--orange)}
+.ap-3 .ap-type{background:#ede9fe;color:var(--purple)}
+.ap-line{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px dashed var(--line)}
+.ap-line:last-child{border-bottom:none}
+.ap-line .lbl{color:var(--sub);flex-shrink:0;margin-right:10px}
+.ap-line .val{font-weight:600;text-align:right}
+.ap-line .val-y{color:var(--green)}
+.ap-line .val-r{color:var(--red)}
+.ap-line .val-a{color:var(--amber)}
+.area-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ag{border:1px solid var(--line);border-radius:12px;padding:18px;background:#fafbfc}
+.ag h3{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.ag-1 h3{color:var(--green)}
+.ag-2 h3{color:var(--orange)}
+.ag-3 h3{color:var(--purple)}
+.ag-section{margin-bottom:12px}
+.ag-section .title{font-size:12px;color:var(--sub);font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.ag-section ul{list-style:none;padding-left:0;font-size:13px}
+.ag-section li{padding:3px 0;display:flex;justify-content:space-between;align-items:center}
+.ag-section li .name{color:var(--ink)}
+.ag-section li .meta{font-size:11px;color:var(--sub)}
+.ag-section li .meta-r{color:var(--red);font-weight:600}
+.ag-section li .meta-g{color:var(--green);font-weight:600}
+.ag-section li .meta-a{color:var(--amber);font-weight:600}
+.cmp-table{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;border:1px solid var(--line);font-size:13px}
+.cmp-table th,.cmp-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
+.cmp-table thead{background:linear-gradient(135deg,#1e293b 0%,#334155 100%);color:#fff}
+.cmp-table thead th{font-weight:600;font-size:13px}
+.cmp-table .col-1{color:var(--green);font-weight:700}
+.cmp-table .col-2{color:var(--orange);font-weight:700}
+.cmp-table .col-3{color:var(--purple);font-weight:700}
+.cmp-table .hl{background:#fefce8;font-weight:700}
+.cmp-table .hl-r{background:#fef2f2;color:var(--red);font-weight:700}
+.cmp-table .hl-g{background:#f0fdf4;color:var(--green);font-weight:700}
+.verdict{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.vd{border-radius:12px;padding:18px;color:#fff;position:relative;overflow:hidden}
+.vd-1{background:linear-gradient(135deg,#16a34a 0%,#15803d 100%)}
+.vd-2{background:linear-gradient(135deg,#ea580c 0%,#c2410c 100%)}
+.vd-3{background:linear-gradient(135deg,#7c3aed 0%,#6d28d9 100%)}
+.vd h3{font-size:18px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.vd .verdict-label{font-size:11px;opacity:.85;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.vd .score{font-size:36px;font-weight:800;line-height:1;margin-bottom:4px}
+.vd .score-label{font-size:12px;opacity:.85;margin-bottom:12px}
+.vd .reason{font-size:13px;line-height:1.5;background:rgba(255,255,255,.12);padding:10px 12px;border-radius:8px}
+.vd .reason strong{color:#fef08a}
+.warn-bar{background:linear-gradient(90deg,#fef2f2 0%,#fee2e2 100%);border:1px solid #fecaca;border-left:4px solid var(--red);padding:14px 18px;border-radius:10px;margin:18px 0;font-size:13px;color:var(--red);display:flex;align-items:center;gap:10px}
+.warn-bar .icon{font-size:18px;flex-shrink:0}
+.warn-bar strong{font-weight:700}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;margin-right:4px;font-weight:600}
+.tag-r{background:#fee2e2;color:var(--red)}
+.tag-g{background:#dcfce7;color:var(--green)}
+.tag-a{background:#fef3c7;color:var(--amber)}
+.tag-b{background:#dbeafe;color:var(--blue)}
+.tag-p{background:#ede9fe;color:var(--purple)}
+.tip{font-size:12px;color:var(--sub);padding:6px 10px;background:#f1f5f9;border-radius:6px;display:inline-block;margin-top:6px}
+.bar-chart{height:8px;background:#f1f5f9;border-radius:4px;overflow:hidden;margin:6px 0}
+.bar-chart .bar{height:100%;border-radius:4px;transition:width .5s}
+.bar-1{background:linear-gradient(90deg,#86efac,#16a34a)}
+.bar-2{background:linear-gradient(90deg,#fdba74,#ea580c)}
+.bar-3{background:linear-gradient(90deg,#c4b5fd,#7c3aed)}
+.footer{text-align:center;color:var(--sub);font-size:12px;padding:20px 0;margin-top:30px;border-top:1px solid var(--line)}
+.footer a{color:var(--blue);text-decoration:none}
+@media (max-width:1100px){.quick-cards,.mortgage-grid,.apply-grid,.area-grid,.verdict{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <h1>3 盘深度对比 · 灵芝地铁站附近优选</h1>
+  <div class="sub">
+    <span class="hero-tag">深铁璟城</span>
+    <span class="hero-tag">安居福汇阁</span>
+    <span class="hero-tag">庆宜华苑棚改二期</span>
+    <span style="color:#cbd5e1">· 详细月供拆解 · 申购方式对比 · 周边配套实勘</span>
+  </div>
+  <div class="meta">
+    <span>数据更新 2026-07-21</span>
+    <span>深圳可售人才房 / 棚改房</span>
+    <span>用户：月薪到手 21,500 · 公积金月缴 +3,300</span>
+    <span>预算首付 ≤ 25 万</span>
+  </div>
+</div>
+
+<div class="warn-bar">
+  <span class="icon">⚠️</span>
+  <div>
+    <strong>关键前提：</strong>
+    用户购房资格为 <strong>本科+深户+3 年社保</strong>（人才房基本门槛）· 公积金月缴存 <strong>3,300 元</strong> · 首付预算上限 <strong>25 万</strong>。
+    棚改房可售对象优先为棚改区原住户，剩余房源才向人才配售——申购方式与人才房略有差异。
+  </div>
+</div>
+
+<!-- 1. 快速对比卡 -->
+<div class="card">
+  <div class="sec-hdr">
+    <h2>📊 3 盘快速对比（一眼看全）</h2>
+    <span class="badge badge-purple">核心 8 项</span>
+  </div>
+  <div class="quick-cards">
+    <div class="qc qc-1">
+      <div class="qc-rank">🥇 首选 · 85分</div>
+      <div class="qc-icon">🚇</div>
+      <div class="qc-name">深铁璟城</div>
+      <div class="qc-where">松岗 · 11 号线 碧头站旁</div>
+      <div>
+        <span class="qc-tag qc-tag-g">期房 2026.12</span>
+        <span class="qc-tag qc-tag-b">摇号轮候</span>
+        <span class="qc-tag qc-tag-g">首付 24 万</span>
+      </div>
+      <div class="qc-data">
+        <div><span class="lbl">均价</span><span class="val val-g">2.40 万</span></div>
+        <div><span class="lbl">两房总价</span><span class="val">165 万</span></div>
+        <div><span class="lbl">距地铁</span><span class="val">200m·3分</span></div>
+        <div><span class="lbl">房源</span><span class="val">1200+</span></div>
+        <div><span class="lbl">实际月供</span><span class="val val-g">3,313</span></div>
+        <div><span class="lbl">月供压力</span><span class="val val-g">15.4%</span></div>
+      </div>
+    </div>
+    <div class="qc qc-2">
+      <div class="qc-rank">🥈 备选 · 80分</div>
+      <div class="qc-icon">🏠</div>
+      <div class="qc-name">安居福汇阁</div>
+      <div class="qc-where">福海 · 11 号线 桥头站 900m</div>
+      <div>
+        <span class="qc-tag qc-tag-g">现房 2023</span>
+        <span class="qc-tag qc-tag-b">已配售过</span>
+        <span class="qc-tag qc-tag-y">首付 32 万</span>
+      </div>
+      <div class="qc-data">
+        <div><span class="lbl">均价</span><span class="val">3.04 万</span></div>
+        <div><span class="lbl">两房总价</span><span class="val">213 万</span></div>
+        <div><span class="lbl">距地铁</span><span class="val">900m·11分</span></div>
+        <div><span class="lbl">房源</span><span class="val">仅 28</span></div>
+        <div><span class="lbl">实际月供</span><span class="val">5,241</span></div>
+        <div><span class="lbl">月供压力</span><span class="val val-a">24.4%</span></div>
+      </div>
+    </div>
+    <div class="qc qc-3">
+      <div class="qc-rank">🥉 跟踪 · 30分</div>
+      <div class="qc-icon">🏙️</div>
+      <div class="qc-name">庆宜华苑棚改二期</div>
+      <div class="qc-where">新安 · 5/12 号线 灵芝站旁</div>
+      <div>
+        <span class="qc-tag qc-tag-a">期房 2026</span>
+        <span class="qc-tag qc-tag-b">棚改余房</span>
+        <span class="qc-tag qc-tag-r">首付 52.5 万</span>
+      </div>
+      <div class="qc-data">
+        <div><span class="lbl">均价</span><span class="val val-r">5.00 万</span></div>
+        <div><span class="lbl">两房总价</span><span class="val">350 万</span></div>
+        <div><span class="lbl">距地铁</span><span class="val val-g">300m·5分</span></div>
+        <div><span class="lbl">房源</span><span class="val">约 104</span></div>
+        <div><span class="lbl">实际月供</span><span class="val val-r">10,734</span></div>
+        <div><span class="lbl">月供压力</span><span class="val val-r">49.9%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. 月供深度拆解 -->
+<div class="card">
+  <div class="sec-hdr">
+    <h2>💰 月供深度拆解（原月供 vs 公积金抵扣 vs 实际月供）</h2>
+    <span class="badge badge-blue">核心 · 必看</span>
+  </div>
+  <div style="background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--sub);line-height:1.7">
+    <strong style="color:var(--ink)">计算公式：</strong><br>
+    ① 贷款额 = 总价 × 85%（首付 15%）&nbsp;&nbsp;② 月利率 = (LPR 4.20% - 30BP) / 12 = 0.325%<br>
+    ③ 月供 = 贷款额 × 月利率 × (1+月利率)^360 / [(1+月利率)^360 - 1]&nbsp;&nbsp;等额本息 30 年<br>
+    ④ <strong style="color:var(--blue)">实际月供 = 月供 − 公积金月缴存额 3,300 元</strong>（公积金可全额抵扣贷款本息）
+  </div>
+  <div class="mortgage-grid">
+    <div class="mg mg-1">
+      <h3>🚇 深铁璟城</h3>
+      <div class="mg-row"><span class="lbl">两房总价</span><span class="val">¥1,650,000</span></div>
+      <div class="mg-row"><span class="lbl">首付 15%</span><span class="val">¥247,500</span></div>
+      <div class="mg-row"><span class="lbl">贷款额</span><span class="val">¥1,402,500</span></div>
+      <div class="mg-row"><span class="lbl">原月供（30年）</span><span class="val">¥6,613</span></div>
+      <div class="mg-row"><span class="lbl">− 公积金月缴存</span><span class="val" style="color:var(--blue)">−¥3,300</span></div>
+      <div class="mg-row total"><span class="lbl">实际月供</span><span class="val">¥3,313</span></div>
+      <div class="mg-row cash-flow"><span class="lbl">月现金流</span><span class="val">+¥18,187</span></div>
+      <div class="mg-formula">
+        <strong>30 年总利息：</strong>¥978,180<br>
+        <strong>占月收入比：</strong>15.4%（健康区间）<br>
+        <strong>30 年总还款：</strong>¥2,380,680
+      </div>
+    </div>
+    <div class="mg mg-2">
+      <h3>🏠 安居福汇阁</h3>
+      <div class="mg-row"><span class="lbl">两房总价</span><span class="val">¥2,130,000</span></div>
+      <div class="mg-row"><span class="lbl">首付 15%</span><span class="val">¥319,500</span></div>
+      <div class="mg-row"><span class="lbl">贷款额</span><span class="val">¥1,810,500</span></div>
+      <div class="mg-row"><span class="lbl">原月供（30年）</span><span class="val">¥8,541</span></div>
+      <div class="mg-row"><span class="lbl">− 公积金月缴存</span><span class="val" style="color:var(--blue)">−¥3,300</span></div>
+      <div class="mg-row total"><span class="lbl">实际月供</span><span class="val">¥5,241</span></div>
+      <div class="mg-row cash-flow"><span class="lbl">月现金流</span><span class="val">+¥16,259</span></div>
+      <div class="mg-formula">
+        <strong>30 年总利息：</strong>¥1,262,160<br>
+        <strong>占月收入比：</strong>24.4%（中等压力）<br>
+        <strong>30 年总还款：</strong>¥3,072,660
+      </div>
+    </div>
+    <div class="mg mg-3">
+      <h3>🏙️ 庆宜华苑棚改二期</h3>
+      <div class="mg-row"><span class="lbl">两房总价</span><span class="val">¥3,500,000</span></div>
+      <div class="mg-row"><span class="lbl">首付 15%</span><span class="val">¥525,000</span></div>
+      <div class="mg-row"><span class="lbl">贷款额</span><span class="val">¥2,975,000</span></div>
+      <div class="mg-row"><span class="lbl">原月供（30年）</span><span class="val">¥14,034</span></div>
+      <div class="mg-row"><span class="lbl">− 公积金月缴存</span><span class="val" style="color:var(--blue)">−¥3,300</span></div>
+      <div class="mg-row total"><span class="lbl">实际月供</span><span class="val">¥10,734</span></div>
+      <div class="mg-row cash-flow" style="background:linear-gradient(90deg,#fee2e2 0%,#fecaca 100%);border-color:#f87171">
+        <span class="lbl" style="color:var(--red)">月现金流</span>
+        <span class="val" style="color:var(--red)">+¥10,766</span>
+      </div>
+      <div class="mg-formula">
+        <strong>30 年总利息：</strong>¥2,076,240<br>
+        <strong>占月收入比：</strong>49.9%（⚠️ 高压）<br>
+        <strong>30 年总还款：</strong>¥5,051,240
+      </div>
+    </div>
+  </div>
+  <div class="tip">💡 <strong>月现金流 = 月收入 21,500 − 实际月供</strong>。深铁璟城现金流最健康；庆宜华苑虽月收入结余 10,766，但实际月供占总收入 49.9% 已触达警戒线。</div>
+</div>
+
+<!-- 3. 申购方式对比 -->
+<div class="card">
+  <div class="sec-hdr">
+    <h2>📝 申购方式（轮候 vs 直接购买）</h2>
+    <span class="badge badge-amber">必看 · 影响时间线</span>
+  </div>
+  <div class="apply-grid">
+    <div class="ap ap-1">
+      <h3>🚇 深铁璟城</h3>
+      <div class="ap-type">人才房 · 第二批次（待配售）</div>
+      <div class="ap-line"><span class="lbl">申购方式</span><span class="val val-y">摇号轮候</span></div>
+      <div class="ap-line"><span class="lbl">轮候队列</span><span class="val">已登记</span></div>
+      <div class="ap-line"><span class="lbl">资格门槛</span><span class="val">本科+深户+3年社保</span></div>
+      <div class="ap-line"><span class="lbl">预计出结果</span><span class="val">2026 Q4</span></div>
+      <div class="ap-line"><span class="lbl">限售年限</span><span class="val val-a">10 年</span></div>
+      <div class="ap-line"><span class="lbl">竞争激烈度</span><span class="val val-a">中等</span></div>
+      <div class="ap-line"><span class="lbl">是否可立即买</span><span class="val val-r">❌ 不可</span></div>
+      <div class="tip" style="background:#f0fdf4;color:var(--green);margin-top:10px">✅ 你是已登记轮候人，只等第二批次摇号。预计 2026 年底前出结果。</div>
+    </div>
+    <div class="ap ap-2">
+      <h3>🏠 安居福汇阁</h3>
+      <div class="ap-type">人才房 · 现房（已基本售罄）</div>
+      <div class="ap-line"><span class="lbl">申购方式</span><span class="val val-y">现房配售</span></div>
+      <div class="ap-line"><span class="lbl">轮候队列</span><span class="val">已结束</span></div>
+      <div class="ap-line"><span class="lbl">资格门槛</span><span class="val">本科+深户+3年社保</span></div>
+      <div class="ap-line"><span class="lbl">配售时间</span><span class="val">2023 已结束</span></div>
+      <div class="ap-line"><span class="lbl">限售年限</span><span class="val val-a">10 年</span></div>
+      <div class="ap-line"><span class="lbl">剩余房源</span><span class="val val-a">仅 28 套</span></div>
+      <div class="ap-line"><span class="lbl">是否可立即买</span><span class="val val-a">⚠️ 极难</span></div>
+      <div class="tip" style="background:#fff7ed;color:var(--orange);margin-top:10px">⚠️ 现房已基本售罄。如有尾房放出，需快速申请。建议持续关注住建局公告。</div>
+    </div>
+    <div class="ap ap-3">
+      <h3>🏙️ 庆宜华苑棚改二期</h3>
+      <div class="ap-type">棚改房 · 剩余人才房</div>
+      <div class="ap-line"><span class="lbl">申购方式</span><span class="val val-y">按申请顺序</span></div>
+      <div class="ap-line"><span class="lbl">轮候队列</span><span class="val">无需轮候</span></div>
+      <div class="ap-line"><span class="lbl">资格门槛</span><span class="val">人才房同等</span></div>
+      <div class="ap-line"><span class="lbl">预计开售</span><span class="val">2026 年内</span></div>
+      <div class="ap-line"><span class="lbl">限售年限</span><span class="val val-a">10 年</span></div>
+      <div class="ap-line"><span class="lbl">配售对象</span><span class="val">原住户→人才</span></div>
+      <div class="ap-line"><span class="lbl">是否可立即买</span><span class="val val-r">❌ 预算不足</span></div>
+      <div class="tip" style="background:#faf5ff;color:var(--purple);margin-top:10px">💡 棚改房无轮候，但要先等原住户选完剩余房源才向人才配售。首付 52.5 万远超 25 万上限。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. 周边配套 -->
+<div class="card">
+  <div class="sec-hdr">
+    <h2>🏪 周边配套实勘（商场 · 医疗 · 教育）</h2>
+    <span class="badge badge-green">核心 · 影响居住体验</span>
+  </div>
+  <div class="area-grid">
+    <div class="ag ag-1">
+      <h3>🚇 深铁璟城 · 松岗片区</h3>
+      <div class="ag-section">
+        <div class="title">🚇 地铁交通</div>
+        <ul>
+          <li><span class="name">碧头站（11 号线终点）</span><span class="meta meta-g">200m · 步行 3 分钟</span></li>
+          <li><span class="name">松岗站（11/6 号线）</span><span class="meta">2 站 5 分钟</span></li>
+          <li><span class="name">→ 桥头（公司）</span><span class="meta">5 站 12 分钟</span></li>
+          <li><span class="name">→ 固戍（女友）</span><span class="meta">9 站 28 分钟</span></li>
+        </ul>
+      </div>
+      <div class="ag-section">
+        <div class="title">🛍️ 商超商场</div>
+        <ul>
+          <li><span class="name">松岗天虹</span><span class="meta meta-a">2km · 成熟商圈</span></li>
+          <li><span class="name">星巴克/麦当劳</span><span class="meta">碧头站旁已开业</span></li>
+          <li><span class="name">京基百纳广场</span><span class="meta meta-r">5km · 远</span></li>
+        </ul>
+      </div>
+      <div class="ag-section">
+        <div class="title">🏥 医疗</div>
+        <ul>
+          <li><span class="name">松岗人民医院（二甲）</span><span class="meta">2.5km</span></li>
+          <li><span class="name">宝安人民医院（三甲）</span><span class="meta meta-r">15km · 远</span></li>
+        </ul>
+      </div>
+      <div class="ag-section">
+        <div class="title">📚 教育</div>
+        <ul>
+          <li><span class="name">松岗实验学校</span><span class="meta">1.5km · 公办</span></li>
+          <li><span class="name">碧头小学</span><span class="meta">300m · 公办</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ag ag-2">
+      <h3>🏠 安居福汇阁 · 福海片区</h3>
+      <div class="ag-section">
+        <div class="title">🚇 地铁交通</div>
+        <ul>
+          <li><span class="name">桥头站（11 号线）</span><span class="meta meta-a">900m · 步行 11 分钟</span></li>
+          <li><span class="name">福海站（规划 12 号线）</span><span class="meta">未来 800m</span></li>
+          <li><span class="name">→ 桥头（公司）</span><span class="meta meta-g">步行 900m·10 分</span></li>
+          <li><span class="name">→ 固戍（女友）</span><span class="meta meta-a">3 站 10 分钟</span></li>
+        </ul>
+      </div>
+      <div class="ag-section">
+        <div class="title">🛍️ 商超商场</div>
+        <ul>
+          <li><span class="name">福海家博汇</span><span class="meta">1km · 综合商场</span></li>
+          <li><span class="name">同泰百货</span><span class="meta">1.5km</span></li>
+          <li><span class="name">宝安益田假日里</span><span class="meta meta-r">5km · 远</span></li>
+        </ul>
+      </div>
+      <div class="ag-section">
+        <div class="title">🏥 医疗</div>
+        <ul>
+          <li><span class="name">福永人民医院（二甲）</span><span class="meta meta-a">3km</span></li>
+          <li><span class="name">宝安人民医院（三甲）</span><span class="meta meta-r">12km · 远</span></li>
+        </ul>
+      </div>
+      <div class="ag-section">
+        <div class="title">📚 教育</div>
+        <ul>
+          <li><span class="name">福永中学</span><span class="meta">1.5km · 公办</span></li>
+          <li><span class="name">福海小学</span><span class="meta">800m · 公办</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ag ag-3">
+      <h3>🏙️ 庆宜华苑棚改二期 · 新安核心</h3>
+      <div class="ag-section">
+        <div class="title">🚇 地铁交通</div>
+        <ul>
+          <li><span class="name">灵芝站（5/12 号线换乘）</span><span class="meta meta-g">300m · 步行 5 分钟</span></li>
+          <li><span class="name">翻身站（5 号线）</span><span class="meta">1km · 步行 12 分钟</span></li>
+          <li><span class="name">→ 桥头（公司）</span><span class="meta">换乘 1 次·~20 分钟</span></li>
+          <li><span class="name">→ 固戍（女友）</span><span class="meta">换乘 1 次·~25 分钟</span></li>
+        </ul>
+      </div>
+      <div class="ag-section">
+        <div class="title">🛍️ 商超商场</div>
+        <ul>
+          <li><span class="name">海雅缤纷城</span><span class="meta meta-g">800m · 宝安最大综合商场</span></li>
+          <li><span class="name">新安公园商业街</span><span class="meta meta-g">500m · 餐饮丰富</span></li>
+          <li><span class="name">前海壹方城</span><span class="meta meta-a">5km · 中高端</span></li>
+        </ul>
+      </div>
+      <div class="ag-section">
+        <div class="title">🏥 医疗</div>
+        <ul>
+          <li><span class="name">宝安人民医院（三甲）</span><span class="meta meta-g">1.5km · 步行可达</span></li>
+          <li><span class="name">宝安中医院（三甲）</span><span class="meta">2km</span></li>
+        </ul>
+      </div>
+      <div class="ag-section">
+        <div class="title">📚 教育</div>
+        <ul>
+          <li><span class="name">新安中学（省一级）</span><span class="meta meta-g">1km · 优质公办</span></li>
+          <li><span class="name">宝安中学（集团）</span><span class="meta">1.5km · 顶级公办</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tip">🎯 <strong>灵芝地铁站是新安核心商圈 + 双线换乘，去前海/福田/罗湖/龙华 都方便，位置优势最大。</strong> 深铁璟城和安居福汇阁在沙井/松岗/福海郊区，配套成熟度差距大。</div>
+</div>
+
+<!-- 5. 6 维评分雷达 -->
+<div class="card">
+  <div class="sec-hdr">
+    <h2>🎯 6 维评分雷达对比（满分 100）</h2>
+    <span class="badge badge-purple">综合评分</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+    <div style="padding:18px;background:#f0fdf4;border-radius:12px;border:1px solid #bbf7d0">
+      <div style="font-weight:700;color:var(--green);margin-bottom:10px">🚇 深铁璟城 · 总分 85</div>
+      <div class="bar-chart"><div class="bar bar-1" style="width:95%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>价格优势</span><span style="color:var(--green);font-weight:700">95</span></div>
+      <div class="bar-chart"><div class="bar bar-1" style="width:90%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>通勤便利</span><span style="color:var(--green);font-weight:700">90</span></div>
+      <div class="bar-chart"><div class="bar bar-1" style="width:85%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>房源充足</span><span style="color:var(--green);font-weight:700">85</span></div>
+      <div class="bar-chart"><div class="bar bar-1" style="width:70%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>地段价值</span><span style="color:var(--orange);font-weight:700">70</span></div>
+      <div class="bar-chart"><div class="bar bar-1" style="width:75%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>生活配套</span><span style="color:var(--orange);font-weight:700">75</span></div>
+      <div class="bar-chart"><div class="bar bar-1" style="width:85%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>现房/期房</span><span style="color:var(--green);font-weight:700">85</span></div>
+    </div>
+
+    <div style="padding:18px;background:#fff7ed;border-radius:12px;border:1px solid #fed7aa">
+      <div style="font-weight:700;color:var(--orange);margin-bottom:10px">🏠 安居福汇阁 · 总分 80</div>
+      <div class="bar-chart"><div class="bar bar-2" style="width:80%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>价格优势</span><span style="color:var(--orange);font-weight:700">80</span></div>
+      <div class="bar-chart"><div class="bar bar-2" style="width:88%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>通勤便利</span><span style="color:var(--green);font-weight:700">88</span></div>
+      <div class="bar-chart"><div class="bar bar-2" style="width:30%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>房源充足</span><span style="color:var(--red);font-weight:700">30</span></div>
+      <div class="bar-chart"><div class="bar bar-2" style="width:70%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>地段价值</span><span style="color:var(--orange);font-weight:700">70</span></div>
+      <div class="bar-chart"><div class="bar bar-2" style="width:75%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>生活配套</span><span style="color:var(--orange);font-weight:700">75</span></div>
+      <div class="bar-chart"><div class="bar bar-2" style="width:100%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>现房/期房</span><span style="color:var(--green);font-weight:700">100 ⭐</span></div>
+    </div>
+
+    <div style="padding:18px;background:#faf5ff;border-radius:12px;border:1px solid #ddd6fe">
+      <div style="font-weight:700;color:var(--purple);margin-bottom:10px">🏙️ 庆宜华苑棚改二期 · 总分 30</div>
+      <div class="bar-chart"><div class="bar bar-3" style="width:25%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>价格优势</span><span style="color:var(--red);font-weight:700">25</span></div>
+      <div class="bar-chart"><div class="bar bar-3" style="width:85%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>通勤便利</span><span style="color:var(--green);font-weight:700">85</span></div>
+      <div class="bar-chart"><div class="bar bar-3" style="width:55%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>房源充足</span><span style="color:var(--amber);font-weight:700">55</span></div>
+      <div class="bar-chart"><div class="bar bar-3" style="width:92%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>地段价值</span><span style="color:var(--green);font-weight:700">92</span></div>
+      <div class="bar-chart"><div class="bar bar-3" style="width:95%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>生活配套</span><span style="color:var(--green);font-weight:700">95</span></div>
+      <div class="bar-chart"><div class="bar bar-3" style="width:40%"></div></div><div style="font-size:12px;display:flex;justify-content:space-between"><span>现房/期房</span><span style="color:var(--red);font-weight:700">40</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. 综合对比表 -->
+<div class="card">
+  <div class="sec-hdr">
+    <h2>📋 7 维综合对比表</h2>
+    <span class="badge">一表决胜</span>
+  </div>
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th style="width:140px">对比维度</th>
+        <th class="col-1" style="width:33%">🚇 深铁璟城</th>
+        <th class="col-2" style="width:33%">🏠 安居福汇阁</th>
+        <th class="col-3" style="width:33%">🏙️ 庆宜华苑棚改二期</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>📍 区位</td><td>松岗（远郊）</td><td>福海（近郊）</td><td>新安核心</td></tr>
+      <tr><td>🚇 地铁站</td><td>碧头站 11 号线</td><td>桥头站 11 号线</td><td><strong>灵芝站 5/12 号线</strong></td></tr>
+      <tr class="hl-g"><td>📏 距地铁站</td><td>200m · 步行 3 分 ⭐⭐⭐</td><td>900m · 步行 11 分 ⭐⭐</td><td>300m · 步行 5 分 ⭐⭐⭐</td></tr>
+      <tr><td>💵 均价</td><td class="hl-g">2.40 万 ⭐⭐⭐</td><td>3.04 万 ⭐⭐</td><td class="hl-r">5.00 万 ⭐</td></tr>
+      <tr><td>🏠 两房总价</td><td class="hl-g">165 万</td><td>213 万</td><td class="hl-r">350 万</td></tr>
+      <tr class="hl"><td>💰 首付 15%</td><td class="hl-g">24.75 万（达标 ✅）</td><td class="hl-r">32 万（超预算）</td><td class="hl-r">52.5 万（严重超预算）</td></tr>
+      <tr><td>📅 交付时间</td><td>2026.12（期房）</td><td>2023.12（现房 ✅）</td><td>2026 年内（期房）</td></tr>
+      <tr><td>📦 房源</td><td>1200+ 充足</td><td>28 套紧张</td><td>104 套</td></tr>
+      <tr><td>📝 申购方式</td><td>摇号轮候</td><td>现房已售</td><td>棚改余房，无需轮候</td></tr>
+      <tr class="hl"><td>💳 原月供（30年）</td><td class="hl-g">¥6,613</td><td>¥8,541</td><td class="hl-r">¥14,034</td></tr>
+      <tr class="hl-g"><td>💰 实际月供</td><td class="hl-g"><strong>¥3,313</strong></td><td>¥5,241</td><td class="hl-r"><strong>¥10,734</strong></td></tr>
+      <tr><td>📊 月供压力比</td><td class="hl-g">15.4%</td><td>24.4%</td><td class="hl-r">49.9%（警戒线）</td></tr>
+      <tr><td>🏪 周边商场</td><td>松岗天虹 2km</td><td>福海家博汇 1km</td><td class="hl-g"><strong>海雅缤纷城 800m</strong></td></tr>
+      <tr><td>🏥 三甲医院</td><td class="hl-r">15km 远</td><td class="hl-r">12km 远</td><td class="hl-g">1.5km 近</td></tr>
+      <tr><td>📚 优质教育</td><td>松岗实验</td><td>福永中学</td><td class="hl-g"><strong>宝安中学</strong></td></tr>
+      <tr class="hl"><td>🌟 综合评分</td><td class="hl-g"><strong>85 · 首选 ⭐⭐⭐</strong></td><td>80 · 备选 ⭐⭐</td><td class="hl-r">30 · 暂不考虑 ⭐</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 7. 最终建议 -->
+<div class="card">
+  <div class="sec-hdr">
+    <h2>💡 最终建议（基于你的实际预算）</h2>
+    <span class="badge badge-red">决策参考</span>
+  </div>
+
+  <div class="verdict">
+    <div class="vd vd-1">
+      <div class="verdict-label">首选 · 推荐申购</div>
+      <h3>🥇 深铁璟城</h3>
+      <div class="score">85</div>
+      <div class="score-label">综合评分 · 30 年实际月供仅 ¥3,313</div>
+      <div class="reason">
+        <strong>首付 24.75 万在预算内 ✅</strong>，月供仅占收入 15.4%（健康）。区位虽远郊，但 11 号线直达桥头公司仅 5 站 12 分钟。<br><br>
+        唯一不确定：<strong>摇号中签概率</strong>。建议<strong>持续关注第二批次公告</strong>，做多手准备。
+      </div>
+    </div>
+    <div class="vd vd-2">
+      <div class="verdict-label">备选 · 现房首选</div>
+      <h3>🥈 安居福汇阁</h3>
+      <div class="score">80</div>
+      <div class="score-label">综合评分 · 现房即买即住</div>
+      <div class="reason">
+        首付 32 万<strong>超出预算 7 万</strong>，但月供压力 24.4% 仍可控。<strong>通勤最优</strong>：步行 10 分钟到桥头站。<br><br>
+        关键问题：<strong>剩余 28 套很难抢到</strong>。如有尾房放出，建议<strong>第一时间申请</strong>。
+      </div>
+    </div>
+    <div class="vd vd-3">
+      <div class="verdict-label">暂缓 · 长期跟踪</div>
+      <h3>🥉 庆宜华苑棚改二期</h3>
+      <div class="score">30</div>
+      <div class="score-label">综合评分 · 位置最佳但预算超</div>
+      <div class="reason">
+        <strong>首付 52.5 万超预算 27.5 万 ❌</strong>，月供 49.9% 触警戒线。<strong>位置最优</strong>：灵芝双地铁 + 海雅缤纷城 + 宝安中学。<br><br>
+        <strong>建议：</strong>作为<strong>长期跟踪</strong>项目，等薪资提升或首付筹备到位再考虑。
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#fef3c7;border:1px solid #fcd34d;border-left:4px solid var(--amber);padding:14px 18px;border-radius:10px;margin-top:18px;font-size:13px">
+    <strong style="color:var(--amber)">📌 决策建议：</strong>
+    <ol style="margin-top:8px;padding-left:24px;line-height:1.8;color:var(--ink)">
+      <li><strong>主推：</strong>深铁璟城（持续关注第二批次摇号，准备好 24.75 万首付）</li>
+      <li><strong>同步：</strong>安居福汇阁（持续关注住建局尾房公告）</li>
+      <li><strong>暂缓：</strong>庆宜华苑棚改二期（位置优但预算不达标，作为 3-5 年后升级目标）</li>
+      <li><strong>风险提示：</strong>所有"实际月供"基于公积金月缴存 3,300 元稳定缴存的前提。如换工作公积金断缴，月供将骤升</li>
+    </ol>
+  </div>
+</div>
+
+<div class="footer">
+  <p>购房分析系统 · 数据更新于 2026-07-21 · 来源：深圳住建局官网 · 用户决策支持文档</p>
+  <p style="margin-top:6px">返回：<a href="./">主页面（11 盘总览）</a></p>
+</div>
+
+</div>
+</body>
+</html>
